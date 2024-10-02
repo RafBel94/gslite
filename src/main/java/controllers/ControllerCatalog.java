@@ -21,6 +21,7 @@ import views.GUICatalog;
 public class ControllerCatalog {
 	private GUICatalog guiCatalog;
 	private List<Product> productList;
+	private List<Product> filteredProducts;
 	private int selectedIndex = 0;
 
 	public ControllerCatalog(GUICatalog guiCatalog) {
@@ -28,22 +29,53 @@ public class ControllerCatalog {
 		this.guiCatalog = guiCatalog;
 		
 		productList = getProductList();
+		filteredProducts = new ArrayList<>(productList);
 		updateProductList(productList);
-		guiCatalog.getList_catalog().setSelectedIndex(selectedIndex);
+		guiCatalog.getList_catalog().setSelectedIndex(0);
+		
+		updateInfoComponents();
 		
 		guiCatalog.addActListener(new ActListener());
 		guiCatalog.addItemSelectListener(new ListSelectListener());
 		guiCatalog.addDocuListener(new DocuListener());
 	}
 	
+	private void updateInfoComponents() {
+		if(!filteredProducts.isEmpty()) {
+			if(selectedIndex == -1) {
+				Product product = filteredProducts.get(0);
+				guiCatalog.getLbl_image().setText(""); //TODO: Load product image to lbl_image
+				guiCatalog.getLbl_productName().setText(product.getName());
+				guiCatalog.getArea_description().setText(product.getDescription());
+			} else {
+				Product product = filteredProducts.get(selectedIndex);
+				guiCatalog.getLbl_image().setText(""); //TODO: Load product image to lbl_image
+				guiCatalog.getLbl_productName().setText(product.getName());
+				guiCatalog.getArea_description().setText(product.getDescription());
+			}
+		} else {
+			guiCatalog.getLbl_image().setText("NO IMAGE");
+			guiCatalog.getLbl_productName().setText("No product found");
+			guiCatalog.getArea_description().setText("No description");
+		}
+	}
+
 	// Filters products to get only those who meet the requirement
 	private void filterProducts() {
 		String searchText = guiCatalog.getTxt_searchBar().getText().toLowerCase();
-
-		List<Product> filteredProducts = productList.stream()
+		
+		filteredProducts = productList.stream()
 				.filter(product -> product.getName().toLowerCase().contains(searchText)).collect(Collectors.toList());
 
 		updateProductList(filteredProducts);
+		
+		if (!filteredProducts.isEmpty()) {
+	        guiCatalog.getList_catalog().setSelectedIndex(0);
+	        selectedIndex = 0;
+	    } else
+	        selectedIndex = -1;
+	    
+		updateInfoComponents();
 	}
 	
 	// Update the DefaultListModel of the JList in GUICatalog to show the filtered product list
@@ -89,12 +121,9 @@ public class ControllerCatalog {
 		public void valueChanged(ListSelectionEvent e) {
 			JList list = (JList) e.getSource();
 			selectedIndex = list.getSelectedIndex();
+			System.out.println(selectedIndex);
 			
-			Product product = productList.get(selectedIndex);
-			//TODO: Load product image to lbl_image
-			guiCatalog.getLbl_productName().setText(product.getName());
-			guiCatalog.getArea_description().setText(product.getDescription());
-			
+			updateInfoComponents();
 		}
 		
 	}
