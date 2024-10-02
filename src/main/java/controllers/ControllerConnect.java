@@ -20,7 +20,7 @@ public class ControllerConnect {
     public void makeConnection(){
         try{
             ConnectionDB.connect();
-            new GUILogin();
+            new GUILogin(connect);
             connect.dispose();
         } catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();

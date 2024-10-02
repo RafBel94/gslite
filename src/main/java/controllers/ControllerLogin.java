@@ -40,8 +40,7 @@ public class ControllerLogin {
 			// Let's determine which table to check:
 			Connection conn = ConnectionDB.connect();
 			if (ConnectionDB.getUserAccessLvl() != null) {
-				String query = "SELECT username FROM users" + ConnectionDB.getUserAccessLvl()
-						+ " WHERE username = ? AND password = ?";
+				String query = "SELECT username FROM users WHERE username = ? AND password = ?";
 				try (PreparedStatement statementConnection = conn.prepareStatement(query)) {
 					statementConnection.setString(1, username);
 					statementConnection.setString(2, password);
@@ -66,9 +65,9 @@ public class ControllerLogin {
 			else if (buttonPressed == login.getBtnRegister()) {
 				// new GUIRegister(login);
 				login.dispose();
-			// } else if (buttonPressed == login.getBtnLogin()) {
-			// 	String username = login.getTxtUsername().getText();
-			// 	String password = String.valueOf(login.getPwPassword().getPassword());
+			 } else if (buttonPressed == login.getBtnLogin()) {
+			 	String username = login.getTxtUsername().getText();
+			 	String password = String.valueOf(login.getPwPassword().getPassword());
 		 	//  if (!userFound(username))
 			// 		login.getLblError().setText("Username not found.");
 			// 	else if (!passwordMatches(username, password))
@@ -80,7 +79,6 @@ public class ControllerLogin {
 						
 			// 		}
 			// 		login.dispose();
-			// 	}
 			// }
 		}
 
