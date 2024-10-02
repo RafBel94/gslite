@@ -83,6 +83,7 @@ public class GUICatalog extends JFrame {
 		scroll_catalog.setViewportView(list_catalog);
 
 		lbl_image = new JLabel("");
+		lbl_image.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_image.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		lbl_image.setBounds(372, 94, 230, 230);
 		contentPane.add(lbl_image);
