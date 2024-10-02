@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,7 +31,7 @@ public class GUICatalog extends JFrame {
 	private JTextField txt_searchBar;
 	private JSeparator separator_searchbar;
 	private JScrollPane scroll_catalog;
-	private JList<String> list_catalog;
+	private JList list_catalog;
 	private JLabel lbl_image;
 	private JSeparator separator_list;
 	private JLabel lbl_product;
@@ -38,11 +39,14 @@ public class GUICatalog extends JFrame {
 	private JLabel lbl_description;
 	private JTextArea area_description;
 	private JButton btn_details;
+	private DefaultListModel<String> listModel;
 
 	public GUICatalog() {
 		setTitle("Catalog");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 675, 570);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -74,7 +78,8 @@ public class GUICatalog extends JFrame {
 		scroll_catalog.setBounds(20, 94, 268, 426);
 		contentPane.add(scroll_catalog);
 
-		list_catalog = new JList<>();
+		listModel = new DefaultListModel<String>();
+		list_catalog = new JList(listModel);
 		scroll_catalog.setViewportView(list_catalog);
 
 		lbl_image = new JLabel("");
@@ -113,6 +118,8 @@ public class GUICatalog extends JFrame {
 		contentPane.add(btn_details);
 
 		new ControllerCatalog(this);
+		
+		setVisible(true);
 	}
 
 	public void addActListener(ActionListener actListener) {
@@ -125,6 +132,14 @@ public class GUICatalog extends JFrame {
 
 	public void addItemSelectListener(ListSelectionListener selectListener) {
 		list_catalog.addListSelectionListener(selectListener);
+	}
+
+	public DefaultListModel<String> getListModel() {
+		return listModel;
+	}
+
+	public void setListModel(DefaultListModel<String> listModel) {
+		this.listModel = listModel;
 	}
 
 	public JPanel getPanel_searchBar() {
@@ -159,11 +174,11 @@ public class GUICatalog extends JFrame {
 		this.scroll_catalog = scroll_catalog;
 	}
 
-	public JList<String> getList_catalog() {
+	public JList getList_catalog() {
 		return list_catalog;
 	}
 
-	public void setList_catalog(JList<String> list_catalog) {
+	public void setList_catalog(JList list_catalog) {
 		this.list_catalog = list_catalog;
 	}
 
