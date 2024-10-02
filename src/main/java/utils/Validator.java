@@ -1,5 +1,7 @@
 package utils;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class Validator {
 	
 	// -- IMPORTANT-- //
@@ -37,4 +39,17 @@ public class Validator {
 	public static boolean validateProductAmount(String amount) {
 		return amount.matches("[0-9]+");
 	}
+	
+	/**
+    * Calculates the SHA-256 hash of a password given by the user and compares it to another
+    * 
+    * @param givenPassword - Password given by the user, normally obtained from a JTextField
+    * @param encryptedPassword - Hashed password in SHA-256, normally obtained from a SQL query
+    * @return true if the passwords match, false otherwise
+    */
+   public static boolean compareEncryptedPassword(String givenPassword, String encryptedPassword) {
+       String hashedPassword = DigestUtils.sha256Hex(givenPassword);
+       
+       return hashedPassword.equals(encryptedPassword);
+   }
 }
