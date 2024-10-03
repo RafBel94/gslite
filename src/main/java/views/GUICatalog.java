@@ -40,6 +40,7 @@ public class GUICatalog extends JFrame {
 	private JTextArea area_description;
 	private JButton btn_details;
 	private DefaultListModel<String> listModel;
+	private JScrollPane scroll_description;
 
 	public GUICatalog() {
 		setTitle("Catalog");
@@ -108,21 +109,24 @@ public class GUICatalog extends JFrame {
 		lbl_description.setBounds(323, 399, 116, 19);
 		contentPane.add(lbl_description);
 
-		area_description = new JTextArea();
-		area_description.setWrapStyleWord(true);
-		area_description.setLineWrap(true);
-		area_description.setEditable(false);
-		area_description.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		area_description.setBounds(326, 423, 311, 97);
-		contentPane.add(area_description);
-
 		btn_details = new JButton("View details");
 		btn_details.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_details.setBounds(429, 329, 116, 25);
 		contentPane.add(btn_details);
 
+		scroll_description = new JScrollPane();
+		scroll_description.setBounds(331, 429, 305, 91);
+		contentPane.add(scroll_description);
+
+		area_description = new JTextArea();
+		scroll_description.setViewportView(area_description);
+		area_description.setWrapStyleWord(true);
+		area_description.setLineWrap(true);
+		area_description.setEditable(false);
+		area_description.setBorder(new LineBorder(Color.LIGHT_GRAY));
+
 		new ControllerCatalog(this);
-		
+
 		setVisible(true);
 	}
 
@@ -160,6 +164,14 @@ public class GUICatalog extends JFrame {
 
 	public void setLbl_searchBar(JLabel lbl_searchBar) {
 		this.lbl_searchBar = lbl_searchBar;
+	}
+
+	public JScrollPane getScroll_description() {
+		return scroll_description;
+	}
+
+	public void setScroll_description(JScrollPane scroll_description) {
+		this.scroll_description = scroll_description;
 	}
 
 	public JTextField getTxt_searchBar() {

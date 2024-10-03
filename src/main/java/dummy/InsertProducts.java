@@ -24,9 +24,10 @@ public class InsertProducts {
 	
 	public static void main(String[] args) {
 		
-		fillList();
+		// THIS CLASS PURPOSE IS TO FILL THE DATABASE TABLE "products" WITH SOME EXAMPLE PRODUCTS IF IT IS EMPTY
 		
-		//updateDatabase();
+		// fillList();
+		// updateDatabase();
 		
 	}
 
@@ -56,6 +57,7 @@ public class InsertProducts {
 			pstmt.setString(5, type);
 			pstmt.setBytes(6, image);
 
+			System.out.println(name);
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
@@ -74,7 +76,6 @@ public class InsertProducts {
 			BufferedImage bufferedImage = ImageIO.read(file);
 			
 			if(bufferedImage != null) {
-				System.out.println(bufferedImage);
 				// Resize image to 230x230 (JLabel size)
 				BufferedImage resizedImage = Scalr.resize(ImageIO.read(file), 230, 230);
 				
@@ -83,7 +84,7 @@ public class InsertProducts {
 				
 				return blobImage;
 			} else {
-				System.out.println(file.getName() + ": " + bufferedImage);
+				System.out.println("Null Image!!: " + file.getAbsolutePath());
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -120,7 +121,7 @@ public class InsertProducts {
 		list.add(new Product(20, "MSI Optix G24C6", "The MSI Optix G24C6 is a gaming monitor with a curved display that offers immersive visuals and a fast refresh rate. With features like FreeSync technology, it provides smooth gameplay with reduced screen tearing, making it perfect for gaming.", "Monitor", getImage(new File("files/images/msi-optix-G24C6.png")), 219.99, 10));
 		list.add(new Product(21, "MSI Z270 Gaming M3", "The MSI Z270 Gaming M3 is a robust motherboard designed for Intel processors. It features advanced cooling solutions, customizable lighting, and support for high-speed memory, making it an excellent choice for gaming and performance-oriented builds.", "Motherboard", getImage(new File("files/images/msi-z270-gaming-m3.png")), 120.99, 15));
 		list.add(new Product(22, "Nvidia RTX 2060 Super", "The Nvidia RTX 2060 Super is a powerful graphics card that offers excellent performance for gaming at 1080p and 1440p. With support for ray tracing and DLSS technology, it provides stunning graphics and immersive gameplay experiences.", "Graphics Card", getImage(new File("files/images/nvidia-rtx-2060-super.png")), 250.99, 10));
-		list.add(new Product(23, "Nvidia RTX 4090", "The Nvidia RTX 4090 is a top-of-the-line graphics card designed for extreme gaming performance. With advanced ray tracing capabilities and exceptional power, it delivers stunning graphics and performance at 4K resolution and beyond.", "Graphics Card", getImage(new File("files/images/nvidia-rtx4090.png")), 1239.99, 8));
+		list.add(new Product(23, "Nvidia RTX 4090", "The Nvidia RTX 4090 is a top-of-the-line graphics card designed for extreme gaming performance. With advanced ray tracing capabilities and exceptional power, it delivers stunning graphics and performance at 4K resolution and beyond.", "Graphics Card", getImage(new File("files/images/nvidia-rtx-4090.png")), 1239.99, 8));
 		list.add(new Product(24, "PowerColor RX7900", "The PowerColor RX7900 is a high-performance graphics card that provides outstanding gaming performance. With advanced RDNA 3 architecture, it offers exceptional frame rates and stunning visuals for an immersive gaming experience.", "Graphics Card", getImage(new File("files/images/powercolor-rx7900.png")), 959.99, 10));
 		list.add(new Product(25, "Samsung LS32BM700", "The Samsung LS32BM700 is a versatile monitor designed for both entertainment and productivity. With a stunning 4K resolution and vibrant colors, it delivers an immersive viewing experience for movies, games, and work tasks.", "Monitor", getImage(new File("files/images/samsung-LS32BM700.png")), 289.99, 5));
 		list.add(new Product(26, "Xigmatek Overtake", "The Xigmatek Overtake is a stylish and functional tower case that provides excellent airflow and space for high-performance components. Its tempered glass panels showcase your build while supporting multiple cooling configurations.", "Tower Case", getImage(new File("files/images/xigmatek-overtake.png")), 129.99, 15));

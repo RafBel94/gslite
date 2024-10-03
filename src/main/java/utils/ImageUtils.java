@@ -2,11 +2,11 @@ package utils;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -14,17 +14,22 @@ import javax.swing.Icon;
 public class ImageUtils {
 	
 	// Receives an InputStream (Normally obtained from a SQL query result set) and returns a BufferedImage
-	public static BufferedImage fromBinary(InputStream inputStream) {
-		BufferedImage bufferedImage = null;
-		
-		try {
-			bufferedImage =  ImageIO.read(inputStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return bufferedImage;
-	}
+	 public static BufferedImage fromBinaryToBufferedImage(byte[] imageBytes) {
+       BufferedImage image = null;
+       try {
+           ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+           
+           image = ImageIO.read(bais);
+           
+           if (image == null) {
+               System.out.println("Error: Image couldn't be read");
+           }
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+       return image;
+   }
 	
 	// Receives a File (Normally selected from a JFileChooser) and returns a byte array that can be saved into the database as BLOB
 	public static byte[] toBinary(File imageFile) {

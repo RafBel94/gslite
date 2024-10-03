@@ -2,20 +2,26 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import models.Product;
+import utils.ConnectionDB;
+import utils.ImageUtils;
 import views.GUICatalog;
 
 public class ControllerCatalog {
@@ -44,12 +50,12 @@ public class ControllerCatalog {
 		if(!filteredProducts.isEmpty()) {
 			if(selectedIndex == -1) {
 				Product product = filteredProducts.get(0);
-				guiCatalog.getLbl_image().setText(""); //TODO: Load product image to lbl_image
+				guiCatalog.getLbl_image().setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
 				guiCatalog.getLbl_productName().setText(product.getName());
 				guiCatalog.getArea_description().setText(product.getDescription());
 			} else {
 				Product product = filteredProducts.get(selectedIndex);
-				guiCatalog.getLbl_image().setText(""); //TODO: Load product image to lbl_image
+				guiCatalog.getLbl_image().setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
 				guiCatalog.getLbl_productName().setText(product.getName());
 				guiCatalog.getArea_description().setText(product.getDescription());
 			}
@@ -91,11 +97,30 @@ public class ControllerCatalog {
 	private List<Product> getProductList() {
 		List<Product> list = new ArrayList<>();
 		
-		list.add(new Product(0, "Razer Blackwidow V3", "Description example blackwidow", "Keyboard", null, 89.99, 200));
-		list.add(new Product(1, "Razer Deathadder", "Description example deathadder", "Mouse", null, 45.99, 150));
-		list.add(new Product(2, "Corsair K70", "Description example K70", "Keyboard", null, 85.99, 180));
-		list.add(new Product(3, "Corsair K55", "Description example K55", "Keyboard", null, 75.99, 280));
-		list.add(new Product(3, "Logitech G502", "Description example G502", "Mouse", null, 55.99, 250));
+		try {
+			Connection conn = ConnectionDB.connect();
+			
+			String sql = "SELECT * FROM products";
+			
+			Statement stmnt = conn.createStatement();
+			ResultSet rs = stmnt.executeQuery(sql);
+			
+			while(rs.next()) {
+				list.add(new Product(
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getString("description"),
+					rs.getString("type"),
+					rs.getBytes("image"),
+					rs.getDouble("price"),
+					rs.getInt("amount")
+				));
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return list;
 	}
