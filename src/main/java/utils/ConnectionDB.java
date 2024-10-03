@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import models.User;
+
 public class ConnectionDB {
 
     private static Connection conn = null;
-    private static String currentUsername;
-    private static String userAccessLvl;
+    private static User currentUser;
 
     /**
      * Connects to the database.
@@ -33,21 +34,13 @@ public class ConnectionDB {
         }
         return conn;
     }
-
-    public static String getUserAccessLvl() {
-        return userAccessLvl;
+    
+    public static User getCurrentUser() {
+        return currentUser;
     }
 
-    public static void setUserAccessLvl(String userAccessLvl) {
-        ConnectionDB.userAccessLvl = userAccessLvl;
-    }
-
-    public static String getLoginUsername() {
-        return currentUsername;
-    }
-
-    public static void setLoginUsername(String loginUsername) {
-        ConnectionDB.currentUsername = loginUsername;
+    public static void setCurrentUser(User currentUser) {
+        ConnectionDB.currentUser = currentUser;
     }
 
     /**
