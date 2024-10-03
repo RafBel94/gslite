@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import models.User;
 import utils.ConnectionDB;
 import utils.DatabaseUtils;
 import utils.Validator;
@@ -62,7 +61,7 @@ public class ControllerLogin {
 					login.getLblError().setText("Incorrect password.");
 				else {
 					ConnectionDB.setCurrentUser(DatabaseUtils.getCurrentUser(username));
-					switch (ConnectionDB.getCurrentUser().getRole()) { //TODO: Get user!
+					switch (ConnectionDB.getCurrentUser().getRole()) {
 					case "user" -> new GUICatalog();
 					// case "admin" -> new GUIMainAdmin(login);
 					}

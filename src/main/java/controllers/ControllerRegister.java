@@ -33,24 +33,38 @@ public class ControllerRegister {
 	public void setErrorLabel() {
 		// First, clear previous errors:
 		register.getLblError().setText("");
+		int numErrors = 4;
 		// Check if username is valid.
-		if (!Validator.validateUsername(register.getTxtUsername().getText()))
+		if (!Validator.validateUsername(register.getTxtUsername().getText())) {
+			numErrors--;
 			register.getLblError()
 					.setText(register.getLblError().getText() + "<html>- Username must be 6-18 characters long.<br>");
+		}
 		// Check if username is taken.
-		if (DatabaseUtils.userFieldFound("username", register.getTxtUsername().getText()))
+		if (DatabaseUtils.userFieldFound("username", register.getTxtUsername().getText())) {
+			numErrors--;
 			register.getLblError().setText(register.getLblError().getText() + "<html>- Username is already taken!<br>");
+		}
 		// Check if password is valid.
-		if (!Validator.validatePassword(String.valueOf(register.getPwField().getPassword())))
+		if (!Validator.validatePassword(String.valueOf(register.getPwField().getPassword()))) {
+			numErrors--;
 			register.getLblError()
-					.setText(register.getLblError().getText() + "<html>- Password should be between 8-18 characters long.<br>");
+					.setText(register.getLblError().getText()
+							+ "<html>- Password should be between 8-18 characters long.<br>");
+		}
 		// Check repeated passwords.
 		if (!Validator.validateRepeatPassword(String.valueOf(register.getPasswordField().getPassword()),
-				String.valueOf(register.getPwField().getPassword())))
+				String.valueOf(register.getPwField().getPassword()))) {
+			numErrors--;
 			register.getLblError().setText(register.getLblError().getText() + "<html>- Passwords don't match!<br>");
+		}
 		// Check if email is valid.
-		if (!Validator.validateEmail(register.getTxtEmail().getText()))
-			register.getLblError().setText(register.getLblError().getText() + "<html>- Email must follow: example@place.domain<br>");
+		if (!Validator.validateEmail(register.getTxtEmail().getText())) {
+			numErrors--;
+			register.getLblError()
+					.setText(register.getLblError().getText() + "<html>- Email must follow: example@place.domain<br>");
+		}
+		register.getLblError().setText(register.getLblError().getText() + "<br>".repeat(numErrors));
 	}
 
 	public void registrationProcess() {
@@ -77,8 +91,7 @@ public class ControllerRegister {
 			if (btn == register.getBtnCancel()) {
 				new GUILogin(register);
 				register.dispose();
-			}
-			else 
+			} else
 				registrationProcess();
 		}
 

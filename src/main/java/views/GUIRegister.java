@@ -48,7 +48,7 @@ public class GUIRegister extends JFrame {
 	public GUIRegister(JFrame frame) {
 		setTitle("Register");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 389, 305);
+		setBounds(100, 100, 389, 340);
 		setLocationRelativeTo(frame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -86,7 +86,7 @@ public class GUIRegister extends JFrame {
 		panelError = new JPanel();
 		panelBottom.add(panelError, BorderLayout.NORTH);
 		
-		lblError = new JLabel("<html><br>By registering, you <strong>agree</strong> to our <a href=''>Terms of Service.</a><br><br>");
+		lblError = new JLabel("<html><br>By registering, you <strong>agree</strong> to our <a href=''>Terms of Service.</a><br><br><br>");
 		lblError.setForeground(new Color(255, 0, 0));
 		panelError.add(lblError);
 		
