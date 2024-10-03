@@ -109,6 +109,9 @@ public class GUICatalog extends JFrame {
 		contentPane.add(lbl_description);
 
 		area_description = new JTextArea();
+		area_description.setWrapStyleWord(true);
+		area_description.setLineWrap(true);
+		area_description.setEditable(false);
 		area_description.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		area_description.setBounds(326, 423, 311, 97);
 		contentPane.add(area_description);

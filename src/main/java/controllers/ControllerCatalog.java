@@ -91,10 +91,11 @@ public class ControllerCatalog {
 	private List<Product> getProductList() {
 		List<Product> list = new ArrayList<>();
 		
-		list.add(new Product(0, "Razer Blackwidow V3", "Description example blackwidow", "Keyboard", null, 89.99f, 200));
-		list.add(new Product(1, "Razer Deathadder", "Description example deathadder", "Mouse", null, 45.99f, 150));
-		list.add(new Product(2, "Corsair K70", "Description example K70", "Keyboard", null, 85.99f, 180));
-		list.add(new Product(3, "Logitech G502", "Description example G502", "Mouse", null, 55.99f, 250));
+		list.add(new Product(0, "Razer Blackwidow V3", "Description example blackwidow", "Keyboard", null, 89.99, 200));
+		list.add(new Product(1, "Razer Deathadder", "Description example deathadder", "Mouse", null, 45.99, 150));
+		list.add(new Product(2, "Corsair K70", "Description example K70", "Keyboard", null, 85.99, 180));
+		list.add(new Product(3, "Corsair K55", "Description example K55", "Keyboard", null, 75.99, 280));
+		list.add(new Product(3, "Logitech G502", "Description example G502", "Mouse", null, 55.99, 250));
 		
 		return list;
 	}
@@ -121,7 +122,6 @@ public class ControllerCatalog {
 		public void valueChanged(ListSelectionEvent e) {
 			JList list = (JList) e.getSource();
 			selectedIndex = list.getSelectedIndex();
-			System.out.println(selectedIndex);
 			
 			updateInfoComponents();
 		}
