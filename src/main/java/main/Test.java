@@ -6,7 +6,7 @@ import views.GUIConnect;
 
 public class Test {
     public static void main(String[] args) {
-    	FlatLightLaf.setup();
-    	new GUIConnect();
+        FlatLightLaf.setup();
+        new GUIConnect();
     }
 }

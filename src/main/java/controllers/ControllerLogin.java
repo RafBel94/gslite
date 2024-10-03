@@ -4,12 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
 
 import utils.ConnectionDB;
 import views.GUILogin;
+
 /**
  * This class is responsible for handling the login functionality of the
  * application.
@@ -54,6 +56,22 @@ public class ControllerLogin {
 		return false;
 	}
 
+	public boolean userFieldFound(String field, String value) {
+		try (Connection conn = ConnectionDB.connect()) {
+			String query = "SELECT " + field + " FROM users WHERE " + field + " = " + value + ";";
+			ResultSet rs = conn.createStatement().executeQuery(query);
+			if (rs.next())
+				return true;
+		} catch (ClassNotFoundException e1) {
+			login.getLblError().setText("Contact an administrator for help. (Code: ClassNotFoundException, 1)");
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			login.getLblError().setText("Contact an administrator for help. (Code: SQLException, 1)");
+			e1.printStackTrace();
+		}
+		return false;
+	}
+
 	private class ActListener implements ActionListener {
 
 		@Override
@@ -65,24 +83,24 @@ public class ControllerLogin {
 			else if (buttonPressed == login.getBtnRegister()) {
 				// new GUIRegister(login);
 				login.dispose();
-			 } else if (buttonPressed == login.getBtnLogin()) {
-			 	String username = login.getTxtUsername().getText();
-			 	String password = String.valueOf(login.getPwPassword().getPassword());
-		 	//  if (!userFound(username))
-			// 		login.getLblError().setText("Username not found.");
-			// 	else if (!passwordMatches(username, password))
-			// 		login.getLblError().setText("Incorrect password.");
-			// 	else {
-			// 		switch (ConnectionDB.getUserAccessLvl()) {
-			// 			case "user" -> new GUIMainUser(login);
-			// 			//case "admin" -> new GUIMainAdmin(login);
-						
-			// 		}
-			// 		login.dispose();
-			// }
+			} else if (buttonPressed == login.getBtnLogin()) {
+				String username = login.getTxtUsername().getText();
+				String password = String.valueOf(login.getPwPassword().getPassword()); // TODO: Change this bad bitch
+				if (!userFieldFound("username", username))
+					login.getLblError().setText("Username not found.");
+				else if (!passwordMatches(username, password))
+					login.getLblError().setText("Incorrect password.");
+				else {
+					switch (ConnectionDB.getUserAccessLvl()) {
+						// case "user" -> new GUIMainUser(login);
+						// //case "admin" -> new GUIMainAdmin(login);
+
+					}
+					login.dispose();
+				}
+			}
+
 		}
 
 	}
-
-}
 }
