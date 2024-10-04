@@ -41,6 +41,7 @@ public class GUICatalog extends JFrame {
 	private JButton btn_details;
 	private DefaultListModel<String> listModel;
 	private JScrollPane scroll_description;
+	private JButton btn_logout;
 
 	public GUICatalog() {
 		setTitle("Catalog");
@@ -53,6 +54,10 @@ public class GUICatalog extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		btn_logout = new JButton("Log out");
+		btn_logout.setBounds(549, 6, 89, 23);
+		contentPane.add(btn_logout);
 
 		panel_searchBar = new JPanel();
 		panel_searchBar.setBounds(10, 11, 639, 51);
@@ -115,7 +120,7 @@ public class GUICatalog extends JFrame {
 		contentPane.add(btn_details);
 
 		scroll_description = new JScrollPane();
-		scroll_description.setBounds(331, 429, 305, 91);
+		scroll_description.setBounds(323, 429, 313, 91);
 		contentPane.add(scroll_description);
 
 		area_description = new JTextArea();
@@ -132,6 +137,7 @@ public class GUICatalog extends JFrame {
 
 	public void addActListener(ActionListener actListener) {
 		btn_details.addActionListener(actListener);
+		btn_logout.addActionListener(actListener);
 	}
 
 	public void addDocuListener(DocumentListener docuListener) {
@@ -140,6 +146,14 @@ public class GUICatalog extends JFrame {
 
 	public void addItemSelectListener(ListSelectionListener selectListener) {
 		list_catalog.addListSelectionListener(selectListener);
+	}
+
+	public JButton getBtn_logout() {
+		return btn_logout;
+	}
+
+	public void setBtn_logout(JButton btn_logout) {
+		this.btn_logout = btn_logout;
 	}
 
 	public DefaultListModel<String> getListModel() {

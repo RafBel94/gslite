@@ -2,10 +2,6 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,9 +16,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import models.Product;
-import utils.ConnectionDB;
+import utils.DatabaseUtils;
 import utils.ImageUtils;
 import views.GUICatalog;
+import views.GUILogin;
+import views.GUIProductDetails;
 
 public class ControllerCatalog {
 	private GUICatalog guiCatalog;
@@ -34,7 +32,7 @@ public class ControllerCatalog {
 		super();
 		this.guiCatalog = guiCatalog;
 		
-		productList = getProductList();
+		productList = DatabaseUtils.getAllProductsAsList();
 		filteredProducts = new ArrayList<>(productList);
 		updateProductList(productList);
 		guiCatalog.getList_catalog().setSelectedIndex(0);
@@ -93,37 +91,6 @@ public class ControllerCatalog {
 			listModel.addElement(p.getName());
 	}
 
-	// Temporary method to fill the JList until database is ready
-	private List<Product> getProductList() {
-		List<Product> list = new ArrayList<>();
-		
-		try {
-			Connection conn = ConnectionDB.connect();
-			
-			String sql = "SELECT * FROM products";
-			
-			Statement stmnt = conn.createStatement();
-			ResultSet rs = stmnt.executeQuery(sql);
-			
-			while(rs.next()) {
-				list.add(new Product(
-					rs.getInt("id"),
-					rs.getString("name"),
-					rs.getString("description"),
-					rs.getString("type"),
-					rs.getBytes("image"),
-					rs.getDouble("price"),
-					rs.getInt("amount")
-				));
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return list;
-	}
 	
 	
 	
@@ -135,10 +102,17 @@ public class ControllerCatalog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton btn = (JButton) e.getSource();
-			
-			//TODO: new GUIProduct(Frame guiCatalog, Product product)
+
+			if (btn == guiCatalog.getBtn_details()) {
+
+				new GUIProductDetails(guiCatalog, filteredProducts.get(selectedIndex));
+				guiCatalog.dispose();
+			} else if (btn == guiCatalog.getBtn_logout()) {
+				new GUILogin(guiCatalog);
+				guiCatalog.dispose();
+			}
 		}
-		
+
 	}
 	
 	private class ListSelectListener implements ListSelectionListener {

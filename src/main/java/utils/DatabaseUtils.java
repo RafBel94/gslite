@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import models.Product;
 import models.User;
 
 public class DatabaseUtils {
@@ -67,5 +71,36 @@ public class DatabaseUtils {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static List<Product> getAllProductsAsList() {
+		List<Product> list = new ArrayList<>();
+		
+		try {
+			Connection conn = ConnectionDB.connect();
+			
+			String sql = "SELECT * FROM products";
+			
+			Statement stmnt = conn.createStatement();
+			ResultSet rs = stmnt.executeQuery(sql);
+			
+			while(rs.next()) {
+				list.add(new Product(
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getString("description"),
+					rs.getString("type"),
+					rs.getBytes("image"),
+					rs.getDouble("price"),
+					rs.getInt("amount")
+				));
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 }
