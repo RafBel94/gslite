@@ -8,6 +8,6 @@ import views.GUIConnect;
 public class Test {
     public static void main(String[] args) {
         FlatLightLaf.setup();
-        new GUICatalog();
+        new GUIConnect();
     }
 }

@@ -10,12 +10,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import models.Product;
+import utils.ConnectionDB;
 import utils.DatabaseUtils;
 import utils.ImageUtils;
 import views.GUICatalog;
@@ -108,8 +110,13 @@ public class ControllerCatalog {
 				new GUIProductDetails(guiCatalog, filteredProducts.get(selectedIndex));
 				guiCatalog.dispose();
 			} else if (btn == guiCatalog.getBtn_logout()) {
-				new GUILogin(guiCatalog);
-				guiCatalog.dispose();
+				int selection = JOptionPane.showConfirmDialog(guiCatalog, "Confirmation", "Are you sure you want to log out?", JOptionPane.WARNING_MESSAGE);
+				
+				if(selection == JOptionPane.OK_OPTION) {
+					new GUILogin(guiCatalog);
+					guiCatalog.dispose();
+					ConnectionDB.setCurrentUser(null);
+				}
 			}
 		}
 
