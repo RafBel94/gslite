@@ -1,19 +1,18 @@
 package views;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import utils.ConnectionDB;
-
 import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
+
+import utils.ConnectionDB;
 
 public class GUIAdminMenu extends JFrame {
 

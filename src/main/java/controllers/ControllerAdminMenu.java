@@ -6,11 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import utils.ConnectionDB;
-import utils.DatabaseUtils;
 import views.GUIAdminMenu;
 import views.GUICatalog;
 import views.GUILogin;
-import views.GUIRegister;
 
 public class ControllerAdminMenu {
 	private GUIAdminMenu adminMenu;
@@ -28,7 +26,7 @@ public class ControllerAdminMenu {
 			if(button == adminMenu.getBtnAdd());
 				//TODO: Open GuiAddProduct
 			else if (button == adminMenu.getBtnCatalog())
-				new GUICatalog();
+				new GUICatalog(adminMenu);
 			else if (button == adminMenu.getBtnEdit());
 				//TODO: Open GUIEditProduct
 			else if (button == adminMenu.getBtnLogout()) {
