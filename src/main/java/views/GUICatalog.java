@@ -43,11 +43,11 @@ public class GUICatalog extends JFrame {
 	private JScrollPane scroll_description;
 	private JButton btn_logout;
 
-	public GUICatalog() {
+	public GUICatalog(JFrame frame) {
 		setTitle("Catalog");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 675, 570);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(frame);
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

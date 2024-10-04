@@ -62,7 +62,7 @@ public class ControllerLogin {
 				else {
 					ConnectionDB.setCurrentUser(DatabaseUtils.getCurrentUser(username));
 					switch (ConnectionDB.getCurrentUser().getRole()) {
-					case "user" -> new GUICatalog();
+					case "user" -> new GUICatalog(login);
 					// case "admin" -> new GUIMainAdmin(login);
 					}
 					login.dispose();

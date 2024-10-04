@@ -40,12 +40,12 @@ public class GUIProductDetails extends JFrame {
 	private JLabel lbl_amount;
 	private JTextField txt_amount;
 
-	public GUIProductDetails(GUICatalog guiCatalog, Product product) {
+	public GUIProductDetails(JFrame frame, Product product) {
 		setTitle("Product Details");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 638, 488);
-		setLocationRelativeTo(guiCatalog);
+		setLocationRelativeTo(frame);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
