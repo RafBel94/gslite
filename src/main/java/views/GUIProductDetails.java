@@ -3,11 +3,7 @@ package views;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.awt.image.ImagingOpException;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,8 +15,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
-import org.imgscalr.Scalr;
 
 import controllers.ControllerProductDetails;
 import models.Product;
