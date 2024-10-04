@@ -2,6 +2,7 @@ package utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+
 public class Validator {
 
 	// -- IMPORTANT-- //
@@ -32,7 +33,7 @@ public class Validator {
 	}
 
 	public static boolean validateProductName(String name) {
-		return name.matches("[A-Za-z0-9\\.]+");
+		return name.matches("[A-Za-z0-9\\s\\.-]+");
 	}
 
 	public static boolean validateProductPrice(String price) {
@@ -57,5 +58,9 @@ public class Validator {
 		String hashedPassword = DigestUtils.sha256Hex(givenPassword);
 
 		return hashedPassword.equals(encryptedPassword);
+	}
+	
+	public static String formatBlankspaces(String field) {
+		return field.trim().replaceAll("\\s+", " ");
 	}
 }
