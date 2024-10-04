@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import utils.ConnectionDB;
 import utils.DatabaseUtils;
 import utils.Validator;
+import views.GUIAdminMenu;
 import views.GUICatalog;
 import views.GUILogin;
 import views.GUIRegister;
@@ -63,7 +64,7 @@ public class ControllerLogin {
 					ConnectionDB.setCurrentUser(DatabaseUtils.getCurrentUser(username));
 					switch (ConnectionDB.getCurrentUser().getRole()) {
 					case "user" -> new GUICatalog();
-					// case "admin" -> new GUIMainAdmin(login);
+					case "admin" -> new GUIAdminMenu(login);
 					}
 					login.dispose();
 				}
