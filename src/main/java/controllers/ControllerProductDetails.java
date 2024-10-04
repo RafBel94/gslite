@@ -24,7 +24,7 @@ public class ControllerProductDetails {
 		public void actionPerformed(ActionEvent e) {
 			JButton btn = (JButton) e.getSource();
 			
-			new GUICatalog();
+			new GUICatalog(guiProductDetails);
 			guiProductDetails.dispose();
 		}
 		

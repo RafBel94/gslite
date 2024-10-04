@@ -110,7 +110,7 @@ public class ControllerCatalog {
 				new GUIProductDetails(guiCatalog, filteredProducts.get(selectedIndex));
 				guiCatalog.dispose();
 			} else if (btn == guiCatalog.getBtn_logout()) {
-				int selection = JOptionPane.showConfirmDialog(guiCatalog, "Confirmation", "Are you sure you want to log out?", JOptionPane.WARNING_MESSAGE);
+				int selection = JOptionPane.showConfirmDialog(guiCatalog, "Are you sure you want to log out?", "Confirmation", JOptionPane.WARNING_MESSAGE);
 				
 				if(selection == JOptionPane.OK_OPTION) {
 					new GUILogin(guiCatalog);
