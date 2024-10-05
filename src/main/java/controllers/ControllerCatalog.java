@@ -126,7 +126,8 @@ public class ControllerCatalog {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			JList list = (JList) e.getSource();
+			@SuppressWarnings("unchecked")
+			JList<String> list = (JList<String>) e.getSource();
 			selectedIndex = list.getSelectedIndex();
 			
 			updateInfoComponents();

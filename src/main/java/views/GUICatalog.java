@@ -31,7 +31,7 @@ public class GUICatalog extends JFrame {
 	private JTextField txt_searchBar;
 	private JSeparator separator_searchbar;
 	private JScrollPane scroll_catalog;
-	private JList list_catalog;
+	private JList<String> list_catalog;
 	private JLabel lbl_image;
 	private JSeparator separator_list;
 	private JLabel lbl_product;
@@ -85,7 +85,7 @@ public class GUICatalog extends JFrame {
 		contentPane.add(scroll_catalog);
 
 		listModel = new DefaultListModel<String>();
-		list_catalog = new JList(listModel);
+		list_catalog = new JList<>(listModel);
 		scroll_catalog.setViewportView(list_catalog);
 
 		lbl_image = new JLabel("");
@@ -204,11 +204,11 @@ public class GUICatalog extends JFrame {
 		this.scroll_catalog = scroll_catalog;
 	}
 
-	public JList getList_catalog() {
+	public JList<String> getList_catalog() {
 		return list_catalog;
 	}
 
-	public void setList_catalog(JList list_catalog) {
+	public void setList_catalog(JList<String> list_catalog) {
 		this.list_catalog = list_catalog;
 	}
 

@@ -40,7 +40,7 @@ public class GUICreateProduct extends JFrame {
 	private JTextField txt_price;
 	private JButton btn_image;
 	private JButton btn_accept;
-	private JComboBox combo_type;
+	private JComboBox<String> combo_type;
 
 	// This constructor receives " JFrame frame " but its empty because it's WIP
 	public GUICreateProduct() {
@@ -166,11 +166,11 @@ public class GUICreateProduct extends JFrame {
 		btn_image.addActionListener(actListener);
 	}
 
-	public JComboBox getCombo_type() {
+	public JComboBox<String> getCombo_type() {
 		return combo_type;
 	}
 
-	public void setCombo_type(JComboBox combo_type) {
+	public void setCombo_type(JComboBox<String> combo_type) {
 		this.combo_type = combo_type;
 	}
 

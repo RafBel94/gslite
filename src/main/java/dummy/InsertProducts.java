@@ -33,6 +33,7 @@ public class InsertProducts {
 
 	
 
+	@SuppressWarnings("unused")
 	private static void updateDatabase() {
 		for(Product p : list) {
 			insertProductIntoDatabase(p.getName(),p.getDescription(),p.getPrice(),p.getAmount(),p.getType(),p.getImage());
@@ -97,6 +98,7 @@ public class InsertProducts {
 		return blobImage;
 	}
 	
+	@SuppressWarnings("unused")
 	private static void fillList() {
 		list.add(new Product(0, "Razer Blackwidow V3", "The Razer BlackWidow V3 is a mechanical gaming keyboard with Razer Green or Yellow switches, customizable RGB Chroma lighting, a durable aluminum frame, and media controls. It's known for gaming performance and comfort, with a detachable wrist rest and Synapse 3 support for customization.", "Keyboard", getImage(new File("files/images/razer-blackwidow-v3.png")), 89.99, 20));
 		list.add(new Product(1, "Razer Deathadder", "The Razer DeathAdder is a popular gaming mouse known for its ergonomic design, high-precision optical sensor, and durability. It features customizable buttons, RGB lighting, and is designed for comfortable, long-term use, making it ideal for both casual and competitive gamers.", "Mouse", getImage(new File("files/images/razer-deathadder-v2.png")), 45.99, 50));
