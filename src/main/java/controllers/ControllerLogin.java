@@ -56,7 +56,7 @@ public class ControllerLogin {
 				login.dispose();
 			} else if (buttonPressed == login.getBtnLogin()) {
 				String username = login.getTxtUsername().getText();
-				if (!DatabaseUtils.userFieldFound("username", username))
+				if (!DatabaseUtils.stringFieldFound("users", "username", username))
 					login.getLblError().setText("Username not found.");
 				else if (!passwordMatches(username, String.valueOf(login.getPwPassword().getPassword())))
 					login.getLblError().setText("Incorrect password.");

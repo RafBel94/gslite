@@ -74,7 +74,6 @@ public class ControllerCatalog {
 				.filter(product -> product.getName().toLowerCase().contains(searchText)).collect(Collectors.toList());
 
 		updateProductList(filteredProducts);
-		
 		if (!filteredProducts.isEmpty()) {
 	        guiCatalog.getList_catalog().setSelectedIndex(0);
 	        selectedIndex = 0;

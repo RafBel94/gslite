@@ -43,13 +43,12 @@ public class DatabaseUtils {
 		return null;
 	}
 	
-	public static boolean userFieldFound(String field, String value) {
+	public static boolean stringFieldFound(String table, String field, String value) {
 		try {
 			Connection conn = ConnectionDB.connect();
-			String query = "SELECT " + field + " FROM gslite.users WHERE " + field + " = '" + value + "';";
+			String query = "SELECT " + field + " FROM " + table + " WHERE " + field + " = '" + value + "';";
 			ResultSet rs = conn.createStatement().executeQuery(query);
-			if (rs.next())
-				return true;
+			return rs.next();
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (SQLException e1) {
@@ -72,6 +71,78 @@ public class DatabaseUtils {
 		}
 		return false;
 	}
+	public static int deleteProduct(int id) {
+		try {
+			Connection connection = ConnectionDB.connect();
+			PreparedStatement pStatement = connection.prepareStatement("DELETE FROM products WHERE id = ?;");
+			pStatement.setInt(1, id);
+			return pStatement.executeUpdate();
+		} catch(SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	/**
+	 * Inserts a product.
+	 * !Only use if re-inserting a product!
+	 * @param id
+	 * @param productName
+	 * @param description
+	 * @param price
+	 * @param amount
+	 * @param type
+	 * @param image
+	 * @return true if product is inserted. false if else.
+	 */
+	public static int insertProduct(int id, String productName, String description, double price, int amount, String type, byte[] image) {
+		try {
+			Connection connection = ConnectionDB.connect();
+
+			String sql = "INSERT INTO products (id, name, description, price, amount, type, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			pstmt.setString(2, productName);
+			pstmt.setString(3, description);
+			pstmt.setDouble(4, price);
+			pstmt.setInt(5, amount);
+			pstmt.setString(6, type);
+			pstmt.setBytes(7, image);
+
+			return pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public static int insertProduct(String productName, String description, double price, int amount, String type, byte[] image) {
+		try {
+			Connection connection = ConnectionDB.connect();
+
+			String sql = "INSERT INTO products (name, description, price, amount, type, image) VALUES (?, ?, ?, ?, ?, ?)";
+
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			
+			pstmt.setString(1, productName);
+			pstmt.setString(2, description);
+			pstmt.setDouble(3, price);
+			pstmt.setInt(4, amount);
+			pstmt.setString(5, type);
+			pstmt.setBytes(6, image);
+
+			return pstmt.executeUpdate();
+			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	public static List<Product> getAllProductsAsList() {
 		List<Product> list = new ArrayList<>();
@@ -79,7 +150,7 @@ public class DatabaseUtils {
 		try {
 			Connection conn = ConnectionDB.connect();
 			
-			String sql = "SELECT * FROM products";
+			String sql = "SELECT * FROM products ORDER BY id;";
 			
 			Statement stmnt = conn.createStatement();
 			ResultSet rs = stmnt.executeQuery(sql);

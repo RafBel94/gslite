@@ -10,6 +10,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.imgscalr.Scalr;
 
 public class ImageUtils {
 	
@@ -78,6 +84,35 @@ public class ImageUtils {
       g2d.dispose(); //
       
       return bufferedImage;
+	}
+	/**
+	 * Selects a new image for a label.
+	 * @param label
+	 */
+	public static void selectNewImg(JLabel label) {
+		BufferedImage bufferedImage = null;
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Select only files with extension: .png", "png");
+
+		fileChooser.setFileFilter(filter);
+
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+
+			try {
+				bufferedImage = Scalr.resize(ImageIO.read(selectedFile), 230, 230);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			label.setIcon(new ImageIcon(bufferedImage));
+		}
 	}
 	
 }

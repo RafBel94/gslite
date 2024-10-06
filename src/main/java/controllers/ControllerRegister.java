@@ -23,7 +23,7 @@ public class ControllerRegister {
 	public boolean checkValidation() {
 		return Validator.validateUsername(register.getTxtUsername().getText())
 				&& Validator.validatePassword(String.valueOf(register.getPwField().getPassword()))
-				&& !DatabaseUtils.userFieldFound("username", register.getTxtUsername().getText())
+				&& !DatabaseUtils.stringFieldFound("users", "username", register.getTxtUsername().getText())
 				&& Validator.validateRepeatPassword(String.valueOf(register.getPasswordField().getPassword()),
 						String.valueOf(register.getPwField().getPassword()))
 				&& Validator.validateEmail(register.getTxtEmail().getText());
@@ -41,7 +41,7 @@ public class ControllerRegister {
 					.setText(register.getLblError().getText() + "<html>- Username must be 6-18 characters long.<br>");
 		}
 		// Check if username is taken.
-		if (DatabaseUtils.userFieldFound("username", register.getTxtUsername().getText())) {
+		if (DatabaseUtils.stringFieldFound("users", "username", register.getTxtUsername().getText())) {
 			numErrors--;
 			register.getLblError().setText(register.getLblError().getText() + "<html>- Username is already taken!<br>");
 		}
@@ -64,23 +64,26 @@ public class ControllerRegister {
 			register.getLblError()
 					.setText(register.getLblError().getText() + "<html>- Email must follow: example@place.domain<br>");
 		}
+		//Set correct spacing according to number of errors (to maintain consistency in the design.)
 		register.getLblError().setText(register.getLblError().getText() + "<br>".repeat(numErrors));
 	}
 
-	public void registrationProcess() {
+	public void handleRegistration() {
 		if (!checkValidation())
 			setErrorLabel();
-		else {
-			if (DatabaseUtils.registerUser(register.getTxtUsername().getText(),
-					String.valueOf(register.getPwField().getPassword()), register.getTxtEmail().getText())) {
-				JOptionPane.showMessageDialog(register, "Successfully registered! Proceed to login.", "Success",
-						JOptionPane.INFORMATION_MESSAGE);
-				new GUILogin(register);
-				register.dispose();
-			} else {
-				JOptionPane.showMessageDialog(register, "Oops, something happened!");
-			}
-		}
+		else 
+			register();
+	}
+	
+	public void register() {
+		if (DatabaseUtils.registerUser(register.getTxtUsername().getText(),
+				String.valueOf(register.getPwField().getPassword()), register.getTxtEmail().getText())) {
+			JOptionPane.showMessageDialog(register, "Successfully registered! Proceed to login.", "Success",
+					JOptionPane.INFORMATION_MESSAGE);
+			new GUILogin(register);
+			register.dispose();
+		} else
+			JOptionPane.showMessageDialog(register, "Oops, something happened!");
 	}
 
 	private class ActListener implements ActionListener {
@@ -92,7 +95,7 @@ public class ControllerRegister {
 				new GUILogin(register);
 				register.dispose();
 			} else
-				registrationProcess();
+				handleRegistration();
 		}
 
 	}

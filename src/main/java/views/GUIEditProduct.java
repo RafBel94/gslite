@@ -14,7 +14,12 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionListener;
+
+import controllers.ControllerEditProduct;
+import javax.swing.SpinnerNumberModel;
 
 public class GUIEditProduct extends JFrame {
 
@@ -30,9 +35,12 @@ public class GUIEditProduct extends JFrame {
 	private JComboBox<String> cBType;
 	private JSpinner sPAmount;
 	private JButton btnEdit;
-	private JTextField txtPrice;
 	private JButton btnApply;
 	private JButton btnExit;
+	private JButton btnSelectImg;
+	private JSpinner sPPrice;
+	private JButton btnDelete;
+
 	/**
 	 * Create the frame.
 	 */
@@ -47,146 +55,227 @@ public class GUIEditProduct extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		txtSearch = new JTextField();
 		txtSearch.setBounds(10, 11, 744, 20);
 		contentPane.add(txtSearch);
 		txtSearch.setColumns(10);
-		
-		sPTable = new JScrollPane();
-		sPTable.setBounds(10, 42, 744, 283);
-		contentPane.add(sPTable);
-		
-		table = new JTable();
-		table.setBounds(10, 42, 744, 284);
-		sPTable.setViewportView(table);
+
 		
 		separator = new JSeparator();
 		separator.setBounds(10, 336, 744, 2);
 		contentPane.add(separator);
-		
+
 		txtName = new JTextField();
+		txtName.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
+		txtName.setEnabled(false);
 		txtName.setBounds(10, 349, 369, 33);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
-		
-		lblImage = new JLabel("X");
-		lblImage.setBounds(399, 372, 212, 211);
+
+		lblImage = new JLabel();
+		lblImage.setBounds(399, 349, 212, 211);
 		contentPane.add(lblImage);
-		
+
 		tADescription = new JTextArea();
+		tADescription.setLineWrap(true);
+		tADescription.setWrapStyleWord(true);
+		tADescription.setEnabled(false);
 		tADescription.setBounds(10, 393, 369, 167);
 		contentPane.add(tADescription);
-		
+
 		cBType = new JComboBox<>();
-		cBType.setBounds(10, 571, 212, 33);
+		cBType.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		cBType.setEnabled(false);
+		cBType.setBounds(10, 571, 147, 33);
 		contentPane.add(cBType);
-		
+
 		sPAmount = new JSpinner();
+		sPAmount.setEnabled(false);
 		sPAmount.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
-		sPAmount.setBounds(232, 571, 60, 33);
+		sPAmount.setBounds(167, 571, 96, 33);
 		contentPane.add(sPAmount);
+
+		sPPrice = new JSpinner();
+		sPPrice.setEnabled(false);
+		sPPrice.setModel(new SpinnerNumberModel(Double.valueOf(0), null, null, Double.valueOf(1)));
+		sPPrice.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		sPPrice.setBounds(273, 571, 106, 33);
+		contentPane.add(sPPrice);
 		
 		btnEdit = new JButton("Edit");
-		btnEdit.setBounds(639, 349, 89, 70);
+		btnEdit.setBounds(639, 349, 89, 52);
 		contentPane.add(btnEdit);
-		
-		txtPrice = new JTextField();
-		txtPrice.setBounds(302, 571, 77, 33);
-		contentPane.add(txtPrice);
-		txtPrice.setColumns(10);
-		
+
 		btnApply = new JButton("Apply");
-		btnApply.setBounds(639, 442, 89, 70);
+		btnApply.setBounds(639, 412, 89, 52);
 		contentPane.add(btnApply);
-		
+
 		btnExit = new JButton("Exit");
 		btnExit.setBounds(639, 534, 89, 70);
 		contentPane.add(btnExit);
+		
+		btnDelete = new JButton("Delete");
+		btnDelete.setBounds(639, 471, 89, 52);
+		contentPane.add(btnDelete);
+		
+		btnSelectImg = new JButton("Select Image...");
+		btnSelectImg.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 14));
+		btnSelectImg.setBounds(399, 571, 212, 33);
+		contentPane.add(btnSelectImg);
+		
+		sPTable = new JScrollPane();
+		sPTable.setBounds(10, 42, 744, 283);
+		contentPane.add(sPTable);
+
+		ControllerEditProduct cep = new ControllerEditProduct(this);
+		table = new JTable(cep.initializeJTable());
+		table.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		table.setRowHeight(20);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setBounds(10, 42, 744, 284);
+		sPTable.setViewportView(table);
+		
+		
+		cep.initTableSelectionListener();
 		setVisible(true);
 	}
+	
+
+	public void addLSListeners (ListSelectionListener listener) {
+		table.getSelectionModel().addListSelectionListener(listener);
+	}
+
 	public void addActListeners(ActionListener actListener) {
 		btnApply.addActionListener(actListener);
 		btnEdit.addActionListener(actListener);
 		btnExit.addActionListener(actListener);
+		btnDelete.addActionListener(actListener);
+		btnSelectImg.addActionListener(actListener);
 	}
+	
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+
+	public void setBtnDelete(JButton btnDelete) {
+		this.btnDelete = btnDelete;
+	}
+
+
+	public JButton getBtnSelectImg() {
+		return btnSelectImg;
+	}
+
+	public void setBtnSelectImg(JButton btnSelectImg) {
+		this.btnSelectImg = btnSelectImg;
+	}
+
 	public JTextField getTxtSearch() {
 		return txtSearch;
 	}
+
 	public void setTxtSearch(JTextField txtSearch) {
 		this.txtSearch = txtSearch;
 	}
+
 	public JScrollPane getsPTable() {
 		return sPTable;
 	}
+	
+	public JSpinner getsPPrice() {
+		return sPPrice;
+	}
+
+	public void setsPPrice(JSpinner sPPrice) {
+		this.sPPrice = sPPrice;
+	}
+
+
 	public void setsPTable(JScrollPane sPTable) {
 		this.sPTable = sPTable;
 	}
+
 	public JSeparator getSeparator() {
 		return separator;
 	}
+
 	public void setSeparator(JSeparator separator) {
 		this.separator = separator;
 	}
+
 	public JTextField getTxtName() {
 		return txtName;
 	}
+
 	public void setTxtName(JTextField txtName) {
 		this.txtName = txtName;
 	}
+
 	public JLabel getLblImage() {
 		return lblImage;
 	}
+
 	public void setLblImage(JLabel lblImage) {
 		this.lblImage = lblImage;
 	}
+
 	public JTable getTable() {
 		return table;
 	}
+
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+
 	public JTextArea gettADescription() {
 		return tADescription;
 	}
+
 	public void settADescription(JTextArea tADescription) {
 		this.tADescription = tADescription;
 	}
+
 	public JComboBox<String> getcBType() {
 		return cBType;
 	}
+
 	public void setcBType(JComboBox<String> cBType) {
 		this.cBType = cBType;
 	}
+
 	public JSpinner getsPAmount() {
 		return sPAmount;
 	}
+
 	public void setsPAmount(JSpinner sPAmount) {
 		this.sPAmount = sPAmount;
 	}
+
 	public JButton getBtnEdit() {
 		return btnEdit;
 	}
+
 	public void setBtnEdit(JButton btnEdit) {
 		this.btnEdit = btnEdit;
 	}
-	public JTextField getTxtPrice() {
-		return txtPrice;
-	}
-	public void setTxtPrice(JTextField txtPrice) {
-		this.txtPrice = txtPrice;
-	}
+	
+
 	public JButton getBtnApply() {
 		return btnApply;
 	}
+
 	public void setBtnApply(JButton btnApply) {
 		this.btnApply = btnApply;
 	}
+
 	public JButton getBtnExit() {
 		return btnExit;
 	}
+
 	public void setBtnExit(JButton btnExit) {
 		this.btnExit = btnExit;
 	}
-	
 }

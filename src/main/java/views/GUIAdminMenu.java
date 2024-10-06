@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
+import controllers.ControllerAdminMenu;
 import utils.ConnectionDB;
 
 public class GUIAdminMenu extends JFrame {
@@ -49,7 +50,7 @@ public class GUIAdminMenu extends JFrame {
 		panelTitleCard = new JPanel();
 		panelTitle.add(panelTitleCard, BorderLayout.NORTH);
 		
-		lblTitle = new JLabel("Welcome back," + ConnectionDB.getCurrentUser().getName());
+		lblTitle = new JLabel("Welcome back, " + ConnectionDB.getCurrentUser().getName());
 		lblTitle.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 25));
 		panelTitleCard.add(lblTitle);
 		
@@ -71,6 +72,7 @@ public class GUIAdminMenu extends JFrame {
 		
 		btnLogout = new JButton("Log Out");
 		contentPane.add(btnLogout, BorderLayout.SOUTH);
+		new ControllerAdminMenu(this);
 		setVisible(true);
 	}
 	

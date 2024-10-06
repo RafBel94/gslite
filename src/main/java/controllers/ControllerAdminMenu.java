@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import utils.ConnectionDB;
 import views.GUIAdminMenu;
 import views.GUICatalog;
+import views.GUICreateProduct;
+import views.GUIEditProduct;
 import views.GUILogin;
 
 public class ControllerAdminMenu {
@@ -23,12 +25,12 @@ public class ControllerAdminMenu {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton)e.getSource();
-			if(button == adminMenu.getBtnAdd());
-				//TODO: Open GuiAddProduct
+			if(button == adminMenu.getBtnAdd())
+				new GUICreateProduct(adminMenu);
 			else if (button == adminMenu.getBtnCatalog())
 				new GUICatalog(adminMenu);
-			else if (button == adminMenu.getBtnEdit());
-				//TODO: Open GUIEditProduct
+			else if (button == adminMenu.getBtnEdit())
+				new GUIEditProduct(adminMenu);
 			else if (button == adminMenu.getBtnLogout()) {
 				ConnectionDB.setCurrentUser(null);
 				new GUILogin(adminMenu);

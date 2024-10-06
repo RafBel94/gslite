@@ -43,12 +43,13 @@ public class GUICreateProduct extends JFrame {
 	private JComboBox<String> combo_type;
 
 	// This constructor receives " JFrame frame " but its empty because it's WIP
-	public GUICreateProduct() {
+	//Edit: Done
+	public GUICreateProduct(JFrame frame) {
 		setTitle("Insert product");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 638, 488);
-		// setLocationRelativeTo(frame);
+		setLocationRelativeTo(frame);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

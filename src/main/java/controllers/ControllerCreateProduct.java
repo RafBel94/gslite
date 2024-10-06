@@ -3,29 +3,17 @@ package controllers;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.imgscalr.Scalr;
-
-import utils.ConnectionDB;
+import utils.DatabaseUtils;
 import utils.ImageUtils;
 import utils.Validator;
+import views.GUIAdminMenu;
 import views.GUICreateProduct;
 
 public class ControllerCreateProduct {
@@ -45,15 +33,16 @@ public class ControllerCreateProduct {
 			JButton btn = (JButton) e.getSource();
 			
 			if (btn == guiCreateProduct.getBtn_return()) {
-				// new GUIManageProducts(guiCreateProduct);
-				// guiCreateProduct.dispose();
+				new GUIAdminMenu(guiCreateProduct);
+				guiCreateProduct.dispose();
 			} else if (btn == guiCreateProduct.getBtn_image()) {
-				handleImageSelection();
+				ImageUtils.selectNewImg(guiCreateProduct.getLbl_image());;
 			} else if (btn == guiCreateProduct.getBtn_accept()) {
 				if(checkTextFieldsValues())
 					insertProduct();
 			}
 		}
+	}
 
 		// Applies a format to all the required fields and inserts a new product into the database
 		// In the case of the image, it firsts parses the Icon of the JLabel to BufferedImage and then parses it to byte[]
@@ -65,34 +54,13 @@ public class ControllerCreateProduct {
 			double price = Double.parseDouble(Validator.formatBlankspaces(guiCreateProduct.getTxt_price().getText()));
 			int amount = Integer.parseInt(Validator.formatBlankspaces(guiCreateProduct.getTxt_amount().getText()));
 			
-			try {
-				Connection connection = ConnectionDB.connect();
+			if(DatabaseUtils.insertProduct(productName, description, price, amount, type, image) == 1) {
+				JOptionPane.showMessageDialog(guiCreateProduct, "The product has been added to the catalog", "Product added succesfully", JOptionPane.INFORMATION_MESSAGE);
+				guiCreateProduct.dispose();
+				new GUIAdminMenu(guiCreateProduct);
+			}else
+				JOptionPane.showMessageDialog(guiCreateProduct, "There was an unknown error, please contact an administrator", "Failed to add product", JOptionPane.ERROR_MESSAGE);
 
-				String sql = "INSERT INTO products (name, description, price, amount, type, image) VALUES (?, ?, ?, ?, ?, ?)";
-
-				PreparedStatement pstmt = connection.prepareStatement(sql);
-				
-				pstmt.setString(1, productName);
-				pstmt.setString(2, description);
-				pstmt.setDouble(3, price);
-				pstmt.setInt(4, amount);
-				pstmt.setString(5, type);
-				pstmt.setBytes(6, image);
-
-				int operationResult = pstmt.executeUpdate();
-				
-				if(operationResult == 1) {
-					JOptionPane.showMessageDialog(guiCreateProduct, "The product has been added to the catalog", "Product added succesfully", JOptionPane.INFORMATION_MESSAGE);
-					guiCreateProduct.dispose();
-				}else
-					JOptionPane.showMessageDialog(guiCreateProduct, "There was an unknown error, please contact an administrator", "Failed to add product", JOptionPane.ERROR_MESSAGE);
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 		
 	}
 	
@@ -112,7 +80,7 @@ public class ControllerCreateProduct {
 					textField.setBorder(new LineBorder(Color.RED));
 					JOptionPane.showMessageDialog(guiCreateProduct, "The name field cannot be empty or contain special characters except for \".\" and \"-\" ", "Error in product name field", JOptionPane.WARNING_MESSAGE);
 					allVerified = false;
-				} else if(searchProductInDatabase(text)){
+				} else if(DatabaseUtils.stringFieldFound("products", "name", text)){
 					textField.setBorder(new LineBorder(Color.RED));
 					JOptionPane.showMessageDialog(guiCreateProduct, "There already exists a product with that name in the catalog", "Product already exists", JOptionPane.WARNING_MESSAGE);
 					allVerified = false;
@@ -138,60 +106,6 @@ public class ControllerCreateProduct {
 			}
 		}
 		
-		if (allVerified)
-			return true;
-		else
-			return false;
-	}
-
-	// Search for products with the same name in the database
-	private boolean searchProductInDatabase(String text) {
-		String sql = "SELECT name FROM products";
-		
-		try {
-			Connection conn = ConnectionDB.connect();
-			
-			ResultSet resultSet = conn.createStatement().executeQuery(sql);
-			
-			while(resultSet.next())
-				if(resultSet.getString("name").equalsIgnoreCase(text))
-					return true;
-			
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
-
-	// Opens the JFileChooser with a filter and sets the JLabel "lbl_image" with the choosed image
-	// Applies a resize to the choosed image to fit correctly into the JLabel
-	private void handleImageSelection() {
-		BufferedImage bufferedImage = null;
-
-		JFileChooser fileChooser = new JFileChooser();
-
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Select only files with extension: .png", "png");
-
-		fileChooser.setFileFilter(filter);
-
-		int result = fileChooser.showOpenDialog(null);
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-
-			try {
-				bufferedImage = Scalr.resize(ImageIO.read(selectedFile), 230, 230);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			guiCreateProduct.getLbl_image().setIcon(new ImageIcon(bufferedImage));
-		}
+		return allVerified;
 	}
 }
