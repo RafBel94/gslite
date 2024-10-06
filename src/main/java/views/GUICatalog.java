@@ -42,6 +42,7 @@ public class GUICatalog extends JFrame {
 	private DefaultListModel<String> listModel;
 	private JScrollPane scroll_description;
 	private JButton btn_logout;
+	private JButton btn_admin;
 
 	public GUICatalog(JFrame frame) {
 		setTitle("Catalog");
@@ -58,7 +59,11 @@ public class GUICatalog extends JFrame {
 		btn_logout = new JButton("Log out");
 		btn_logout.setBounds(549, 6, 89, 23);
 		contentPane.add(btn_logout);
-
+		if (frame instanceof GUIAdminMenu) {
+			btn_admin = new JButton("Return to Admin Menu");
+			btn_admin.setBounds(370, 6, 160, 23);
+			contentPane.add(btn_admin);
+		}
 		panel_searchBar = new JPanel();
 		panel_searchBar.setBounds(10, 11, 639, 51);
 		contentPane.add(panel_searchBar);
@@ -138,6 +143,7 @@ public class GUICatalog extends JFrame {
 	public void addActListener(ActionListener actListener) {
 		btn_details.addActionListener(actListener);
 		btn_logout.addActionListener(actListener);
+		btn_admin.addActionListener(actListener);
 	}
 
 	public void addDocuListener(DocumentListener docuListener) {
@@ -146,6 +152,14 @@ public class GUICatalog extends JFrame {
 
 	public void addItemSelectListener(ListSelectionListener selectListener) {
 		list_catalog.addListSelectionListener(selectListener);
+	}
+
+	public JButton getBtn_admin() {
+		return btn_admin;
+	}
+
+	public void setBtn_admin(JButton btn_admin) {
+		this.btn_admin = btn_admin;
 	}
 
 	public JButton getBtn_logout() {

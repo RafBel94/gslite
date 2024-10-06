@@ -136,7 +136,8 @@ public class GUICreateProduct extends JFrame {
 
 		btn_image = new JButton("Select Image");
 		btn_image.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_image.setBounds(402, 245, 133, 23);
+		btn_image.setIcon(new ImageIcon("files/icons/img30.png"));
+		btn_image.setBounds(390, 245, 145, 23);
 		contentPane.add(btn_image);
 
 		btn_accept = new JButton("");

@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 
 import controllers.ControllerEditProduct;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.ImageIcon;
 
 public class GUIEditProduct extends JFrame {
 
@@ -67,7 +68,7 @@ public class GUIEditProduct extends JFrame {
 		contentPane.add(separator);
 
 		txtName = new JTextField();
-		txtName.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
+		txtName.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
 		txtName.setEnabled(false);
 		txtName.setBounds(10, 349, 369, 33);
 		contentPane.add(txtName);
@@ -78,6 +79,7 @@ public class GUIEditProduct extends JFrame {
 		contentPane.add(lblImage);
 
 		tADescription = new JTextArea();
+		tADescription.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		tADescription.setLineWrap(true);
 		tADescription.setWrapStyleWord(true);
 		tADescription.setEnabled(false);
@@ -103,23 +105,33 @@ public class GUIEditProduct extends JFrame {
 		sPPrice.setBounds(273, 571, 106, 33);
 		contentPane.add(sPPrice);
 		
-		btnEdit = new JButton("Edit");
+		btnEdit = new JButton("");
+		btnEdit.setIcon(new ImageIcon(GUIEditProduct.class.getResource("/icons/edit32.png")));
+		btnEdit.setToolTipText("Edit selected product...");
 		btnEdit.setBounds(639, 349, 89, 52);
 		contentPane.add(btnEdit);
 
-		btnApply = new JButton("Apply");
+		btnApply = new JButton("");
+		btnApply.setIcon(new ImageIcon(GUIEditProduct.class.getResource("/icons/tick32.png")));
+		btnApply.setToolTipText("Apply Changes");
 		btnApply.setBounds(639, 412, 89, 52);
 		contentPane.add(btnApply);
 
-		btnExit = new JButton("Exit");
+		btnExit = new JButton("");
+		btnExit.setIcon(new ImageIcon(GUIEditProduct.class.getResource("/icons/return-icon.png")));
+		btnExit.setPressedIcon(new ImageIcon("files/icons/return-icon-pressed.png"));
+		btnExit.setToolTipText("Return to Admin Menu");
 		btnExit.setBounds(639, 534, 89, 70);
 		contentPane.add(btnExit);
 		
-		btnDelete = new JButton("Delete");
+		btnDelete = new JButton("");
+		btnDelete.setIcon(new ImageIcon(GUIEditProduct.class.getResource("/icons/delete32.png")));
+		btnDelete.setToolTipText("Delete selected product...");
 		btnDelete.setBounds(639, 471, 89, 52);
 		contentPane.add(btnDelete);
 		
 		btnSelectImg = new JButton("Select Image...");
+		btnSelectImg.setIcon(new ImageIcon(GUIEditProduct.class.getResource("/icons/img30.png")));
 		btnSelectImg.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 14));
 		btnSelectImg.setBounds(399, 571, 212, 33);
 		contentPane.add(btnSelectImg);

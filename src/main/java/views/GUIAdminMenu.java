@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,13 +62,19 @@ public class GUIAdminMenu extends JFrame {
 		contentPane.add(panelButtons, BorderLayout.CENTER);
 		panelButtons.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("");
+		btnAdd.setToolTipText("Add a new product...");
+		btnAdd.setIcon(new ImageIcon("files/icons/addIcon64.png"));
 		panelButtons.add(btnAdd);
 		
-		btnCatalog = new JButton("Catalog");
+		btnCatalog = new JButton("");
+		btnCatalog.setToolTipText("Browse the catalog...");
+		btnCatalog.setIcon(new ImageIcon("files/icons/searchIcon64.png"));
 		panelButtons.add(btnCatalog);
 		
-		btnEdit = new JButton("Edit");
+		btnEdit = new JButton("");
+		btnEdit.setToolTipText("Edit the current products...");
+		btnEdit.setIcon(new ImageIcon("files/icons/editIcon64.png"));
 		panelButtons.add(btnEdit);
 		
 		btnLogout = new JButton("Log Out");

@@ -20,6 +20,7 @@ import models.Product;
 import utils.ConnectionDB;
 import utils.DatabaseUtils;
 import utils.ImageUtils;
+import views.GUIAdminMenu;
 import views.GUICatalog;
 import views.GUILogin;
 import views.GUIProductDetails;
@@ -33,29 +34,31 @@ public class ControllerCatalog {
 	public ControllerCatalog(GUICatalog guiCatalog) {
 		super();
 		this.guiCatalog = guiCatalog;
-		
+
 		productList = DatabaseUtils.getAllProductsAsList();
 		filteredProducts = new ArrayList<>(productList);
 		updateProductList(productList);
 		guiCatalog.getList_catalog().setSelectedIndex(0);
-		
+
 		updateInfoComponents();
-		
+
 		guiCatalog.addActListener(new ActListener());
 		guiCatalog.addItemSelectListener(new ListSelectListener());
 		guiCatalog.addDocuListener(new DocuListener());
 	}
-	
+
 	private void updateInfoComponents() {
-		if(!filteredProducts.isEmpty()) {
-			if(selectedIndex == -1) {
+		if (!filteredProducts.isEmpty()) {
+			if (selectedIndex == -1) {
 				Product product = filteredProducts.get(0);
-				guiCatalog.getLbl_image().setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
+				guiCatalog.getLbl_image()
+						.setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
 				guiCatalog.getLbl_productName().setText(product.getName());
 				guiCatalog.getArea_description().setText(product.getDescription());
 			} else {
 				Product product = filteredProducts.get(selectedIndex);
-				guiCatalog.getLbl_image().setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
+				guiCatalog.getLbl_image()
+						.setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(product.getImage())));
 				guiCatalog.getLbl_productName().setText(product.getName());
 				guiCatalog.getArea_description().setText(product.getDescription());
 			}
@@ -69,33 +72,30 @@ public class ControllerCatalog {
 	// Filters products to get only those who meet the requirement
 	private void filterProducts() {
 		String searchText = guiCatalog.getTxt_searchBar().getText().toLowerCase();
-		
-		filteredProducts = productList.stream()
-				.filter(product -> product.getName().toLowerCase().contains(searchText)).collect(Collectors.toList());
+
+		filteredProducts = productList.stream().filter(product -> product.getName().toLowerCase().contains(searchText))
+				.collect(Collectors.toList());
 
 		updateProductList(filteredProducts);
 		if (!filteredProducts.isEmpty()) {
-	        guiCatalog.getList_catalog().setSelectedIndex(0);
-	        selectedIndex = 0;
-	    } else
-	        selectedIndex = -1;
-	    
+			guiCatalog.getList_catalog().setSelectedIndex(0);
+			selectedIndex = 0;
+		} else
+			selectedIndex = -1;
+
 		updateInfoComponents();
 	}
-	
-	// Update the DefaultListModel of the JList in GUICatalog to show the filtered product list
+
+	// Update the DefaultListModel of the JList in GUICatalog to show the filtered
+	// product list
 	private void updateProductList(List<Product> products) {
 		DefaultListModel<String> listModel = guiCatalog.getListModel();
 		listModel.clear();
-		
+
 		for (Product p : products)
 			listModel.addElement(p.getName());
 	}
 
-	
-	
-	
-	
 	// PRIVATE CLASSES
 
 	private class ActListener implements ActionListener {
@@ -108,10 +108,14 @@ public class ControllerCatalog {
 
 				new GUIProductDetails(guiCatalog, filteredProducts.get(selectedIndex));
 				guiCatalog.dispose();
+			} else if (btn == guiCatalog.getBtn_admin()) {
+				new GUIAdminMenu(guiCatalog);
+				guiCatalog.dispose();
 			} else if (btn == guiCatalog.getBtn_logout()) {
-				int selection = JOptionPane.showConfirmDialog(guiCatalog, "Are you sure you want to log out?", "Confirmation", JOptionPane.WARNING_MESSAGE);
-				
-				if(selection == JOptionPane.OK_OPTION) {
+				int selection = JOptionPane.showConfirmDialog(guiCatalog, "Are you sure you want to log out?",
+						"Confirmation", JOptionPane.WARNING_MESSAGE);
+
+				if (selection == JOptionPane.OK_OPTION) {
 					new GUILogin(guiCatalog);
 					guiCatalog.dispose();
 					ConnectionDB.setCurrentUser(null);
@@ -120,7 +124,7 @@ public class ControllerCatalog {
 		}
 
 	}
-	
+
 	private class ListSelectListener implements ListSelectionListener {
 
 		@Override
@@ -128,12 +132,12 @@ public class ControllerCatalog {
 			@SuppressWarnings("unchecked")
 			JList<String> list = (JList<String>) e.getSource();
 			selectedIndex = list.getSelectedIndex();
-			
+
 			updateInfoComponents();
 		}
-		
+
 	}
-	
+
 	private class DocuListener implements DocumentListener {
 
 		@Override
@@ -150,6 +154,6 @@ public class ControllerCatalog {
 		public void changedUpdate(DocumentEvent e) {
 			filterProducts();
 		}
-		
+
 	}
 }
