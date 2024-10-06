@@ -26,7 +26,7 @@ public class ControllerEditProduct {
 	private GUIEditProduct guiEditProduct;
 	private int index;
 	private boolean editMode;
-	private List<Product> products;	
+	private List<Product> products;
 
 	public ControllerEditProduct(GUIEditProduct guiEditProduct) {
 		this.guiEditProduct = guiEditProduct;
@@ -48,7 +48,14 @@ public class ControllerEditProduct {
 		// Buttons
 		guiEditProduct.getBtnApply().setEnabled(editMode);
 		guiEditProduct.getBtnSelectImg().setEnabled(editMode);
-		guiEditProduct.getBtnEdit().setEnabled(!editMode);
+		if (editMode) {
+			guiEditProduct.getBtnEdit().setIcon(new ImageIcon("files/icons/cancelEdit32.png"));
+			guiEditProduct.getBtnEdit().setToolTipText("Cancel Changes...");
+		} else {
+			guiEditProduct.getBtnEdit().setIcon(new ImageIcon("files/icons/edit32.png"));
+			guiEditProduct.getBtnEdit().setToolTipText("Edit selected product...");
+			initializeComponents();
+		}
 		// Text & Comboboxes
 		guiEditProduct.getTxtName().setEnabled(editMode);
 		guiEditProduct.getsPPrice().setEnabled(editMode);
@@ -88,10 +95,19 @@ public class ControllerEditProduct {
 	}
 
 	public void initializeComponents() {
-		if(index == -1)
+		if (index == -1) {
+			guiEditProduct.getTxtName().setText("");
+			guiEditProduct.getsPPrice().setValue(0);
+			guiEditProduct.gettADescription().setText("");
+			guiEditProduct.getsPAmount().setValue(0);
+			guiEditProduct.getcBType().setSelectedItem("");
+			guiEditProduct.getLblImage().setIcon(new ImageIcon());
+			guiEditProduct.getBtnEdit().setEnabled(false);
 			return;
+		}
 		if (editMode)
 			editMode();
+		guiEditProduct.getBtnEdit().setEnabled(true);
 		guiEditProduct.getTxtName().setText(products.get(index).getName());
 		guiEditProduct.getsPPrice().setValue(products.get(index).getPrice());
 		guiEditProduct.gettADescription().setText(products.get(index).getDescription());
@@ -159,31 +175,33 @@ public class ControllerEditProduct {
 			} else if (btn == guiEditProduct.getBtnApply()) {
 				editMode();
 				handleApply();
-			} else if (btn == guiEditProduct.getBtnEdit())
+			} else if (btn == guiEditProduct.getBtnEdit()) {
 				editMode();
-			else if (btn == guiEditProduct.getBtnSelectImg())
+			} else if (btn == guiEditProduct.getBtnSelectImg())
 				ImageUtils.selectNewImg(guiEditProduct.getLblImage());
 			else if (btn == guiEditProduct.getBtnDelete())
 				handleDeletion();
 		}
 
 	}
+
 	public void updateProductList(List<Product> products) {
 		this.products = products;
 		refreshTable();
 	}
+
 	private void filterProducts() {
 		products = DatabaseUtils.getAllProductsAsList();
 		String searchText = guiEditProduct.getTxtSearch().getText().toLowerCase();
-		
-		List<Product> filteredProducts  = products.stream()
+
+		List<Product> filteredProducts = products.stream()
 				.filter(product -> product.getName().toLowerCase().contains(searchText)).collect(Collectors.toList());
 
 		updateProductList(filteredProducts);
 		index = filteredProducts.isEmpty() ? -1 : 0;
 		initializeComponents();
 	}
-	
+
 	private class DocuListener implements DocumentListener {
 
 		@Override
@@ -200,7 +218,7 @@ public class ControllerEditProduct {
 		public void changedUpdate(DocumentEvent e) {
 			filterProducts();
 		}
-		
+
 	}
 
 }

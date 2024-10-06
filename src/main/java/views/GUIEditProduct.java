@@ -79,7 +79,6 @@ public class GUIEditProduct extends JFrame {
 		contentPane.add(lblImage);
 
 		tADescription = new JTextArea();
-		tADescription.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		tADescription.setLineWrap(true);
 		tADescription.setWrapStyleWord(true);
 		tADescription.setEnabled(false);
