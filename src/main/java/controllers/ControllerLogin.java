@@ -25,6 +25,7 @@ public class ControllerLogin {
 		this.login = login;
 
 		login.addActListener(new ActListener());
+		login.addTxtActListener(new TxtActListener());
 	}
 
 	/**
@@ -40,6 +41,7 @@ public class ControllerLogin {
 		return Validator.compareEncryptedPassword(password,
 				DatabaseUtils.getStringFromField("users", "username", username, "password"));
 	}
+
 	/**
 	 * In case of a successful connection, this method is called.
 	 */
@@ -51,6 +53,7 @@ public class ControllerLogin {
 		case "admin" -> new GUIAdminMenu(login);
 		}
 	}
+
 	/**
 	 * Once the user pressed the login button, it'll handle the login request.
 	 */
@@ -60,9 +63,19 @@ public class ControllerLogin {
 			login.getLblError().setText("Username not found.");
 		else if (!passwordMatches(username, String.valueOf(login.getPwPassword().getPassword())))
 			login.getLblError().setText("Incorrect password.");
-		else 
+		else {
 			successfulConnect();
-		login.dispose();
+			login.dispose();
+		}
+	}
+
+	private class TxtActListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			handleLogin();
+		}
+
 	}
 
 	private class ActListener implements ActionListener {
@@ -70,7 +83,6 @@ public class ControllerLogin {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton buttonPressed = (JButton) e.getSource();
-
 			if (buttonPressed == login.getBtnExit())
 				System.exit(0);
 			else if (buttonPressed == login.getBtnRegister()) {
