@@ -30,7 +30,10 @@ public class ControllerCatalog {
 	private List<Product> productList;
 	private List<Product> filteredProducts;
 	private int selectedIndex = 0;
-
+	/**
+	 * Creates the controller & Initialises values.
+	 * @param guiCatalog The catalog GUI used to start the controller.
+	 */
 	public ControllerCatalog(GUICatalog guiCatalog) {
 		super();
 		this.guiCatalog = guiCatalog;
@@ -46,7 +49,9 @@ public class ControllerCatalog {
 		guiCatalog.addItemSelectListener(new ListSelectListener());
 		guiCatalog.addDocuListener(new DocuListener());
 	}
-
+	/**
+	 * Method to update components depending on the selectedIndex attribute. 
+	 */
 	private void updateInfoComponents() {
 		if (!filteredProducts.isEmpty()) {
 			if (selectedIndex == -1) {

@@ -27,7 +27,10 @@ public class ControllerEditProduct {
 	private int index;
 	private boolean editMode;
 	private List<Product> products;
-
+	/**
+	 * Creates the controller for the GUI.
+	 * @param guiEditProduct the GUIEditProduct that has this instance of the controller.
+	 */
 	public ControllerEditProduct(GUIEditProduct guiEditProduct) {
 		this.guiEditProduct = guiEditProduct;
 		products = DatabaseUtils.getAllProductsAsList();

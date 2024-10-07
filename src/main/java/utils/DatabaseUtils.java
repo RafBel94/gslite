@@ -12,7 +12,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import models.Product;
 import models.User;
-
+/**
+ * This class must include ALL connections and queries to the database, which the rest of the codebase makes
+ * reference to.
+ * @author Pablorv28
+ * @author FalBel94
+ * @version 1
+ */
 public class DatabaseUtils {
 	/**
 	 * Grabs a string from a desired field and table. If there are multiple, it grabs the first one it finds.

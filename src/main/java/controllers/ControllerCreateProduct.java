@@ -18,14 +18,19 @@ import views.GUICreateProduct;
 
 public class ControllerCreateProduct {
 	private GUICreateProduct guiCreateProduct;
-
+	/**
+	 * Creates the Controller and initialises values.
+	 * @param guiCreateProduct the GUICreateProduct that has this instance of the controller.
+	 */
 	public ControllerCreateProduct(GUICreateProduct guiCreateProduct) {
 		super();
 		this.guiCreateProduct = guiCreateProduct;
 		
 		guiCreateProduct.addActListener(new ActListener());
 	}
-	
+	/**
+	 * Private class to handle all button actions.
+	 */
 	private class ActListener implements ActionListener {
 
 		@Override
@@ -44,8 +49,11 @@ public class ControllerCreateProduct {
 		}
 	}
 
-		// Applies a format to all the required fields and inserts a new product into the database
-		// In the case of the image, it firsts parses the Icon of the JLabel to BufferedImage and then parses it to byte[]
+		/**
+		 * Applies a format to all the required fields and inserts a new product into the database.
+		 * In the case of the image, it firsts parses the Icon of the JLabel to BufferedImage 
+		 * and then parses it to a byte[].
+		 */
 		private void insertProduct() {
 			String productName = Validator.formatBlankspaces(guiCreateProduct.getTxt_productName().getText());
 			String description = guiCreateProduct.getArea_description().getText().trim();
@@ -64,9 +72,12 @@ public class ControllerCreateProduct {
 		
 	}
 	
-	// Iterates over an ArrayList applying a format to it's text and validating each one
-	// If it validates incorrectly, that JTextField border is painted red, and black otherwise
-	// In the case of the "txt_productName" JTextField it checks if it already exists in the database too
+	/**
+	 *  Iterates over an ArrayList applying a format to it's text and validating each one.
+	 *  If it validates incorrectly, that JTextField border is painted red, and black otherwise.
+	 *  In the case of the "txt_productName" JTextField it checks if it already exists in the database too.
+	 * @return true if it verifies that all values are correct. False otherwise.
+	 */
 	public boolean checkTextFieldsValues() {
 		List<JTextField> fields = guiCreateProduct.getAllJTextFields();
 		
