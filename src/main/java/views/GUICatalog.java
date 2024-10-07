@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,10 +46,11 @@ public class GUICatalog extends JFrame {
 	private JButton btn_admin;
 
 	public GUICatalog(JFrame frame) {
-		setTitle("Catalog");
+		setTitle("GSLite");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 675, 570);
 		setLocationRelativeTo(frame);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

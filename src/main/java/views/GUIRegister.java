@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,9 +46,10 @@ public class GUIRegister extends JFrame {
 	 * Create the frame.
 	 */
 	public GUIRegister(JFrame frame) {
-		setTitle("Register");
+		setTitle("GSLite");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 389, 340);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setLocationRelativeTo(frame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

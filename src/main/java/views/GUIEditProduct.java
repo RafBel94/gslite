@@ -47,9 +47,10 @@ public class GUIEditProduct extends JFrame {
 	 */
 	public GUIEditProduct(JFrame frame) {
 		setResizable(false);
-		setTitle("Edit Products");
+		setTitle("GSLite");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 780, 654);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setLocationRelativeTo(frame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

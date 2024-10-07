@@ -41,10 +41,11 @@ public class GUIProductDetails extends JFrame {
 	private JTextField txt_amount;
 
 	public GUIProductDetails(JFrame frame, Product product) {
-		setTitle("Product Details");
+		setTitle("GSLite");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 638, 488);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setLocationRelativeTo(frame);
 		
 		contentPane = new JPanel();

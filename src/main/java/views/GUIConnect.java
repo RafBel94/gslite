@@ -23,9 +23,10 @@ public class GUIConnect extends JFrame {
 	 * Create the frame.
 	 */
 	public GUIConnect() {
-		setTitle("Connection");
+		setTitle("GSLite");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 465, 388);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -37,9 +38,9 @@ public class GUIConnect extends JFrame {
 		panelLogo = new JPanel();
 		contentPane.add(panelLogo);
 		
-		lblLogo = new JLabel("");
+		lblLogo = new JLabel();
 		panelLogo.add(lblLogo);
-		lblLogo.setIcon(new ImageIcon("files/images/InmoManager291.png"));
+		lblLogo.setIcon(new ImageIcon("files/icons/gsliteLogo200.png"));
 		panelConnecting = new JPanel();
 		contentPane.add(panelConnecting);
 		

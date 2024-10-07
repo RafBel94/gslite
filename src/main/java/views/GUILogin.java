@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +25,7 @@ public class GUILogin extends JFrame {
 	private JPanel panelLogo;
 	private JPanel panelData;
 	private JPanel panelRegister;
-	private JLabel lblInmo;
+	private JLabel lblgsl;
 	private JLabel lblRegister;
 	private JButton btnRegister;
 	private JPanel panelLoginExit;
@@ -48,9 +49,10 @@ public class GUILogin extends JFrame {
 	 * Create the frame.
 	 */
 	public GUILogin(JFrame frame) {
-		setTitle("Login");
+		setTitle("GSLite");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 420, 360);
+		setIconImage(new ImageIcon("files/icons/gsliteLogo32.png").getImage());
 		setLocationRelativeTo(frame);
 		
 		contentPane = new JPanel();
@@ -61,9 +63,9 @@ public class GUILogin extends JFrame {
 		panelLogo = new JPanel();
 		contentPane.add(panelLogo, BorderLayout.NORTH);
 		
-		lblInmo = new JLabel("GSLite");
-		lblInmo.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 18));
-		panelLogo.add(lblInmo);
+		lblgsl = new JLabel();
+		lblgsl.setIcon(new ImageIcon("files/icons/gsliteLogo100.png"));
+		panelLogo.add(lblgsl);
 		
 		panelData = new JPanel();
 		contentPane.add(panelData, BorderLayout.CENTER);
@@ -141,8 +143,8 @@ public class GUILogin extends JFrame {
 		btnRegister.addActionListener(listener);
 		btnExit.addActionListener(listener);
 	}
-	public JLabel getLblInmo() {
-		return lblInmo;
+	public JLabel getLblGsl() {
+		return lblgsl;
 	}
 	public JLabel getLblRegister() {
 		return lblRegister;
