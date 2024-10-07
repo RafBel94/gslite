@@ -14,7 +14,14 @@ import models.Product;
 import models.User;
 
 public class DatabaseUtils {
-
+	/**
+	 * Grabs a string from a desired field and table. If there are multiple, it grabs the first one it finds.
+	 * @param table you'd like to search.
+	 * @param identifierField The identifier's field. (I.g "Robert34"'s field is "username")
+	 * @param identifier The Identifier to find the desired result. (I.g "Robert34")
+	 * @param fieldResult The field you'd like to find. (I.g "email")
+	 * @return The String it's found (I.g "robert@gmail.com"). Null if otherwise.
+	 */
 	public static String getStringFromField(String table, String identifierField, String identifier,
 			String fieldResult) {
 		try {
@@ -29,7 +36,11 @@ public class DatabaseUtils {
 		}
 		return null;
 	}
-
+	/**
+	 * Grabs the current user that's logged in.
+	 * @param currUsername the username of the user.
+	 * @return the whole User object.
+	 */
 	public static User getCurrentUser(String currUsername){
 		try{
 			Connection conn = ConnectionDB.connect();
@@ -42,7 +53,13 @@ public class DatabaseUtils {
 		}
 		return null;
 	}
-	
+	/**
+	 * Checks if it finds a string given a table & value.
+	 * @param table the table you'd like to search.
+	 * @param field the field of the value.
+	 * @param value the value of the field you'd like to search.
+	 * @return True if it finds the string. Otherwise false.
+	 */
 	public static boolean stringFieldFound(String table, String field, String value) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -56,7 +73,13 @@ public class DatabaseUtils {
 		}
 		return false;
 	}
-	
+	/**
+	 * Registers a new user.
+	 * @param username The username
+	 * @param password The password (Not SHA256'd!)
+	 * @param email The email
+	 * @return True if it ends up registering the user. False otherwise.
+	 */
 	public static boolean registerUser(String username, String password, String email) {
 		try {
 			Connection conn = ConnectionDB.connect();
@@ -71,6 +94,12 @@ public class DatabaseUtils {
 		}
 		return false;
 	}
+	
+	/**
+	 * Deletes a product given an ID.
+	 * @param id id of the product you'd like to delete.
+	 * @return 1 if product is deleted. 0 if it couldn't find the product. -1 if an error occurred.
+	 */
 	public static int deleteProduct(int id) {
 		try {
 			Connection connection = ConnectionDB.connect();
@@ -85,14 +114,14 @@ public class DatabaseUtils {
 	/**
 	 * Inserts a product.
 	 * !Only use if re-inserting a product!
-	 * @param id
-	 * @param productName
-	 * @param description
-	 * @param price
-	 * @param amount
-	 * @param type
-	 * @param image
-	 * @return true if product is inserted. false if else.
+	 * @param id The ID of the product (Only difference with other method)
+	 * @param productName The name of the product
+	 * @param description The product's description
+	 * @param price It's price
+	 * @param amount The amount in stock
+	 * @param type Type of product
+	 * @param image The byte array of the image.
+	 * @return 1 if product is inserted correctly. 0 If it wasn't. -1 If an error occurred.
 	 */
 	public static int insertProduct(int id, String productName, String description, double price, int amount, String type, byte[] image) {
 		try {
@@ -117,7 +146,16 @@ public class DatabaseUtils {
 		}
 		return -1;
 	}
-	
+	/**
+	 * Inserts a product. Use this one if you just want to insert a product, nothing else.
+	 * @param productName The name of the product
+	 * @param description The product's description
+	 * @param price It's price
+	 * @param amount The amount in stock
+	 * @param type Type of product
+	 * @param image The byte array of the image.
+	 * @return 1 if product is inserted correctly. 0 If it wasn't. -1 If an error occurred.
+	 */
 	public static int insertProduct(String productName, String description, double price, int amount, String type, byte[] image) {
 		try {
 			Connection connection = ConnectionDB.connect();
@@ -143,7 +181,10 @@ public class DatabaseUtils {
 		}
 		return -1;
 	}
-	
+	/**
+	 * Gets all the products from the database and returns it as a List<Product>.
+	 * @return List<Product> full of our products (if we have any).
+	 */
 	public static List<Product> getAllProductsAsList() {
 		List<Product> list = new ArrayList<>();
 		

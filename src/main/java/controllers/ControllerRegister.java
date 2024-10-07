@@ -19,7 +19,10 @@ public class ControllerRegister {
 		this.register = register;
 		register.addActListeners(new ActListener());
 	}
-
+	/**
+	 * Checks if all the validation works out fine.
+	 * @return true if it's a successful, valid registration, false otherwise.
+	 */
 	public boolean checkValidation() {
 		return Validator.validateUsername(register.getTxtUsername().getText())
 				&& Validator.validatePassword(String.valueOf(register.getPwField().getPassword()))
@@ -29,7 +32,9 @@ public class ControllerRegister {
 				&& Validator.validateEmail(register.getTxtEmail().getText());
 
 	}
-
+	/**
+	 * Sets the error label accordingly depending on the number of errors that exist.
+	 */
 	public void setErrorLabel() {
 		// First, clear previous errors:
 		register.getLblError().setText("");
@@ -67,14 +72,20 @@ public class ControllerRegister {
 		//Set correct spacing according to number of errors (to maintain consistency in the design.)
 		register.getLblError().setText(register.getLblError().getText() + "<br>".repeat(numErrors));
 	}
-
+	/**
+	 * Handles the registration process. Only calls other methods.
+	 */
 	public void handleRegistration() {
 		if (!checkValidation())
 			setErrorLabel();
 		else 
 			register();
 	}
-	
+	/**
+	 * After a successful registration check, it'll grab the data sent in by the user and add it in the Database.
+	 * For more information on the registerUser method:
+	 * @see DatabaseUtils 
+	 */
 	public void register() {
 		if (DatabaseUtils.registerUser(register.getTxtUsername().getText(),
 				String.valueOf(register.getPwField().getPassword()), register.getTxtEmail().getText())) {

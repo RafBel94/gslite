@@ -20,7 +20,9 @@ public class ControllerAdminMenu {
 		this.adminMenu = adminMenu;
 		adminMenu.addActListeners(new ActListener());
 	}
-
+	/**
+	 * Class to control the buttons pressed in the main menu. Doesn't have much.
+	 */
 	private class ActListener implements ActionListener {
 
 		@Override

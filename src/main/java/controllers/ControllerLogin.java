@@ -29,19 +29,41 @@ public class ControllerLogin {
 
 	/**
 	 * This method checks if the provided password matches the stored password for
-	 * the given username. It determines which table to check based on the user
+	 * the given user name. It determines which table to check based on the user
 	 * access level set in the class.
 	 * 
-	 * @param username The username to check the password for.
-	 * @param password The password to check against the stored password.
+	 * @param The user name to check the password for.
+	 * @param The password to check against the stored password.
 	 * @return true if the passwords match, false otherwise.
 	 */
 	public boolean passwordMatches(String username, String password) {
 		return Validator.compareEncryptedPassword(password,
 				DatabaseUtils.getStringFromField("users", "username", username, "password"));
 	}
-
-	
+	/**
+	 * In case of a successful connection, this method is called.
+	 */
+	public void successfulConnect() {
+		String username = login.getTxtUsername().getText();
+		ConnectionDB.setCurrentUser(DatabaseUtils.getCurrentUser(username));
+		switch (ConnectionDB.getCurrentUser().getRole()) {
+		case "user" -> new GUICatalog(login);
+		case "admin" -> new GUIAdminMenu(login);
+		}
+	}
+	/**
+	 * Once the user pressed the login button, it'll handle the login request.
+	 */
+	public void handleLogin() {
+		String username = login.getTxtUsername().getText();
+		if (!DatabaseUtils.stringFieldFound("users", "username", username))
+			login.getLblError().setText("Username not found.");
+		else if (!passwordMatches(username, String.valueOf(login.getPwPassword().getPassword())))
+			login.getLblError().setText("Incorrect password.");
+		else 
+			successfulConnect();
+		login.dispose();
+	}
 
 	private class ActListener implements ActionListener {
 
@@ -54,22 +76,8 @@ public class ControllerLogin {
 			else if (buttonPressed == login.getBtnRegister()) {
 				new GUIRegister(login);
 				login.dispose();
-			} else if (buttonPressed == login.getBtnLogin()) {
-				String username = login.getTxtUsername().getText();
-				if (!DatabaseUtils.stringFieldFound("users", "username", username))
-					login.getLblError().setText("Username not found.");
-				else if (!passwordMatches(username, String.valueOf(login.getPwPassword().getPassword())))
-					login.getLblError().setText("Incorrect password.");
-				else {
-					ConnectionDB.setCurrentUser(DatabaseUtils.getCurrentUser(username));
-					switch (ConnectionDB.getCurrentUser().getRole()) {
-					case "user" -> new GUICatalog(login);
-					case "admin" -> new GUIAdminMenu(login);
-					}
-					login.dispose();
-				}
-			}
-
+			} else if (buttonPressed == login.getBtnLogin())
+				handleLogin();
 		}
 
 	}

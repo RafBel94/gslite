@@ -38,11 +38,17 @@ public class ControllerEditProduct {
 		guiEditProduct.addActListeners(new ActListener());
 		guiEditProduct.getTxtSearch().getDocument().addDocumentListener(new DocuListener());
 	}
-
+	/**
+	 * Initialises the ListSelectionListener. Had to add it to a different method as I call the controller before
+	 * the actual table is formed. Can be fixed/rearranged if needed.d
+	 */
 	public void initTableSelectionListener() {
 		guiEditProduct.addLSListeners(new LSListener());
 	}
-
+	/**
+	 * Toggle for editMode. Grabs all different buttons in the GUI and activates them or not depending on the status
+	 * of the parameter editMode.
+	 */
 	public void editMode() {
 		editMode = !editMode;
 		// Buttons
@@ -63,7 +69,9 @@ public class ControllerEditProduct {
 		guiEditProduct.getsPAmount().setEnabled(editMode);
 		guiEditProduct.getcBType().setEnabled(editMode);
 	}
-
+	/**
+	 * Handles applying changes. Only visual confirmations.
+	 */
 	public void handleApply() {
 		int selection = JOptionPane.showConfirmDialog(guiEditProduct, "Are you sure you want to apply the changes?",
 				"Confirm", JOptionPane.INFORMATION_MESSAGE);
@@ -71,7 +79,11 @@ public class ControllerEditProduct {
 			applyChanges();
 		JOptionPane.showMessageDialog(guiEditProduct, "Applied Changes!", "Success", JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	/**
+	 * Applies the changes to the database. Calls a few methods from DatabaseUtils.
+	 * After making the changes, it'll refresh the list and refresh all components.
+	 * @see DatabaseUtils
+	 */
 	public void applyChanges() {
 		DatabaseUtils.deleteProduct(products.get(index).getId());
 		DatabaseUtils.insertProduct(products.get(index).getId(), guiEditProduct.getTxtName().getText(),
@@ -85,7 +97,9 @@ public class ControllerEditProduct {
 		refreshTable();
 
 	}
-
+	/**
+	 * Initialises the combo box for the type. Grabs all existing types and adds them into it.
+	 */
 	public void initializeCBType() {
 		Set<String> typeSet = new HashSet<>();
 		for (Product product : products)
@@ -93,7 +107,11 @@ public class ControllerEditProduct {
 		for (String string : typeSet)
 			guiEditProduct.getcBType().addItem(string);
 	}
-
+	/**
+	 * Initialises components. Probably the most important method of the class at it allows visualisation of
+	 * the whole product, as well as it being responsible of, if there were no index, set all components to be
+	 * either empty or disabled.
+	 */
 	public void initializeComponents() {
 		if (index == -1) {
 			guiEditProduct.getTxtName().setText("No Products found that meet search criteria!");
@@ -121,7 +139,11 @@ public class ControllerEditProduct {
 		guiEditProduct.getLblImage()
 				.setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(products.get(index).getImage())));
 	}
-
+	/**
+	 * Initialises the model for the JTable in the GUI. This method is the reason I had to divide the ListSelection
+	 * Listener from the rest of the listeners.
+	 * @return DefaultTableModel to apply to the JTable. 
+	 */
 	public DefaultTableModel initializeJTable() {
 		String[] columnStrings = { "ID", "Name", "Description", "Price", "Amount", "Type", "Image" };
 		DefaultTableModel defaultTableModel = new DefaultTableModel(columnStrings, 0) {
@@ -139,12 +161,18 @@ public class ControllerEditProduct {
 		}
 		return defaultTableModel;
 	}
-
+	/**
+	 * Refreshes the table. Call in case anything is modified.
+	 * @see handleDeletion() method
+	 * @see handleApply() method
+	 */
 	public void refreshTable() {
 		index = 0;
 		guiEditProduct.getTable().setModel(initializeJTable());
 	}
-
+	/**
+	 * Handles the deletion process.
+	 */
 	public void handleDeletion() {
 		int selection = JOptionPane.showConfirmDialog(guiEditProduct,
 				"Are you sure you want delete the selected product?", "Confirm", JOptionPane.INFORMATION_MESSAGE);
