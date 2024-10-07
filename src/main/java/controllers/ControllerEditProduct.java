@@ -96,18 +96,23 @@ public class ControllerEditProduct {
 
 	public void initializeComponents() {
 		if (index == -1) {
-			guiEditProduct.getTxtName().setText("");
+			guiEditProduct.getTxtName().setText("No Products found that meet search criteria!");
 			guiEditProduct.getsPPrice().setValue(0);
 			guiEditProduct.gettADescription().setText("");
 			guiEditProduct.getsPAmount().setValue(0);
 			guiEditProduct.getcBType().setSelectedItem("");
 			guiEditProduct.getLblImage().setIcon(new ImageIcon());
+			//Editing buttons
+			if(editMode)
+				editMode();
 			guiEditProduct.getBtnEdit().setEnabled(false);
+			guiEditProduct.getBtnDelete().setEnabled(false);
 			return;
 		}
 		if (editMode)
 			editMode();
 		guiEditProduct.getBtnEdit().setEnabled(true);
+		guiEditProduct.getBtnDelete().setEnabled(true);
 		guiEditProduct.getTxtName().setText(products.get(index).getName());
 		guiEditProduct.getsPPrice().setValue(products.get(index).getPrice());
 		guiEditProduct.gettADescription().setText(products.get(index).getDescription());
