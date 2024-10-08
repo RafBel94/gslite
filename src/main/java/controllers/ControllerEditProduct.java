@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import models.Product;
 import utils.DatabaseUtils;
 import utils.ImageUtils;
+import utils.Validator;
 import views.GUIAdminMenu;
 import views.GUIEditProduct;
 
@@ -27,13 +28,18 @@ public class ControllerEditProduct {
 	private int index;
 	private boolean editMode;
 	private List<Product> products;
+	private List<Product> filteredProducts;
+
 	/**
 	 * Creates the controller for the GUI.
-	 * @param guiEditProduct the GUIEditProduct that has this instance of the controller.
+	 * 
+	 * @param guiEditProduct the GUIEditProduct that has this instance of the
+	 *                       controller.
 	 */
 	public ControllerEditProduct(GUIEditProduct guiEditProduct) {
 		this.guiEditProduct = guiEditProduct;
 		products = DatabaseUtils.getAllProductsAsList();
+		filteredProducts = products;
 		editMode = true;
 		index = 0;
 		initializeCBType();
@@ -41,16 +47,19 @@ public class ControllerEditProduct {
 		guiEditProduct.addActListeners(new ActListener());
 		guiEditProduct.getTxtSearch().getDocument().addDocumentListener(new DocuListener());
 	}
+
 	/**
-	 * Initialises the ListSelectionListener. Had to add it to a different method as I call the controller before
-	 * the actual table is formed. Can be fixed/rearranged if needed.d
+	 * Initialises the ListSelectionListener. Had to add it to a different method as
+	 * I call the controller before the actual table is formed. Can be
+	 * fixed/rearranged if needed.d
 	 */
 	public void initTableSelectionListener() {
 		guiEditProduct.addLSListeners(new LSListener());
 	}
+
 	/**
-	 * Toggle for editMode. Grabs all different buttons in the GUI and activates them or not depending on the status
-	 * of the parameter editMode.
+	 * Toggle for editMode. Grabs all different buttons in the GUI and activates
+	 * them or not depending on the status of the parameter editMode.
 	 */
 	public void editMode() {
 		editMode = !editMode;
@@ -72,36 +81,56 @@ public class ControllerEditProduct {
 		guiEditProduct.getsPAmount().setEnabled(editMode);
 		guiEditProduct.getcBType().setEnabled(editMode);
 	}
+
+	public boolean validateFields() {
+		return Validator.validateProductName(guiEditProduct.getTxtName().getText())
+				&& Validator.validateProductDescription(guiEditProduct.gettADescription().getText());
+	}
+
 	/**
 	 * Handles applying changes. Only visual confirmations.
 	 */
 	public void handleApply() {
 		int selection = JOptionPane.showConfirmDialog(guiEditProduct, "Are you sure you want to apply the changes?",
 				"Confirm", JOptionPane.INFORMATION_MESSAGE);
-		if (selection == JOptionPane.YES_OPTION)
+		if (selection == JOptionPane.YES_OPTION) {
+			if(!Validator.validateProductName(guiEditProduct.getTxtName().getText())) {
+				JOptionPane.showMessageDialog(guiEditProduct, "Product name is invalid or too long!", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if(!Validator.validateProductDescription(guiEditProduct.gettADescription().getText())){
+				JOptionPane.showMessageDialog(guiEditProduct, "Product description is too long!", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			applyChanges();
-		JOptionPane.showMessageDialog(guiEditProduct, "Applied Changes!", "Success", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(guiEditProduct, "Applied Changes!", "Success", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
+
 	/**
 	 * Applies the changes to the database. Calls a few methods from DatabaseUtils.
 	 * After making the changes, it'll refresh the list and refresh all components.
+	 * 
 	 * @see DatabaseUtils
 	 */
 	public void applyChanges() {
-		DatabaseUtils.deleteProduct(products.get(index).getId());
-		DatabaseUtils.insertProduct(products.get(index).getId(), guiEditProduct.getTxtName().getText(),
+		DatabaseUtils.deleteProduct(filteredProducts.get(index).getId());
+		DatabaseUtils.insertProduct(filteredProducts.get(index).getId(), guiEditProduct.getTxtName().getText(),
 				guiEditProduct.gettADescription().getText(), (Double) guiEditProduct.getsPPrice().getValue(),
-				(Integer) guiEditProduct.getsPAmount().getValue(),
-				(String) guiEditProduct.getcBType().getSelectedItem(), ImageUtils.bufferedImageToByteArray(
-						ImageUtils.iconToBufferedImage(guiEditProduct.getLblImage().getIcon()), "PNG"));
+				(Integer) guiEditProduct.getsPAmount().getValue(), (String) guiEditProduct.getcBType().getSelectedItem(),
+				ImageUtils.bufferedImageToByteArray(ImageUtils.iconToBufferedImage(guiEditProduct.getLblImage().getIcon()),
+						"PNG"));
 		// After making changes to products list
-		products = DatabaseUtils.getAllProductsAsList();
 		guiEditProduct.getTxtSearch().setText("");
+		products = DatabaseUtils.getAllProductsAsList();
+		filteredProducts = products;
 		refreshTable();
-
+		initializeComponents();
 	}
+
 	/**
-	 * Initialises the combo box for the type. Grabs all existing types and adds them into it.
+	 * Initialises the combo box for the type. Grabs all existing types and adds
+	 * them into it.
 	 */
 	public void initializeCBType() {
 		Set<String> typeSet = new HashSet<>();
@@ -110,12 +139,16 @@ public class ControllerEditProduct {
 		for (String string : typeSet)
 			guiEditProduct.getcBType().addItem(string);
 	}
+
 	/**
-	 * Initialises components. Probably the most important method of the class at it allows visualisation of
-	 * the whole product, as well as it being responsible of, if there were no index, set all components to be
-	 * either empty or disabled.
+	 * Initialises components. Probably the most important method of the class at it
+	 * allows visualisation of the whole product, as well as it being responsible
+	 * of, if there were no index, set all components to be either empty or
+	 * disabled.
 	 */
 	public void initializeComponents() {
+		if (editMode)
+			editMode();
 		if (index == -1) {
 			guiEditProduct.getTxtName().setText("No Products found that meet search criteria!");
 			guiEditProduct.getsPPrice().setValue(0);
@@ -123,29 +156,27 @@ public class ControllerEditProduct {
 			guiEditProduct.getsPAmount().setValue(0);
 			guiEditProduct.getcBType().setSelectedItem("");
 			guiEditProduct.getLblImage().setIcon(new ImageIcon());
-			//Editing buttons
-			if(editMode)
-				editMode();
+			// Editing buttons
 			guiEditProduct.getBtnEdit().setEnabled(false);
 			guiEditProduct.getBtnDelete().setEnabled(false);
 			return;
 		}
-		if (editMode)
-			editMode();
 		guiEditProduct.getBtnEdit().setEnabled(true);
 		guiEditProduct.getBtnDelete().setEnabled(true);
-		guiEditProduct.getTxtName().setText(products.get(index).getName());
-		guiEditProduct.getsPPrice().setValue(products.get(index).getPrice());
-		guiEditProduct.gettADescription().setText(products.get(index).getDescription());
-		guiEditProduct.getsPAmount().setValue(products.get(index).getAmount());
-		guiEditProduct.getcBType().setSelectedItem(products.get(index).getType());
+		guiEditProduct.getTxtName().setText(filteredProducts.get(index).getName());
+		guiEditProduct.getsPPrice().setValue(filteredProducts.get(index).getPrice());
+		guiEditProduct.gettADescription().setText(filteredProducts.get(index).getDescription());
+		guiEditProduct.getsPAmount().setValue(filteredProducts.get(index).getAmount());
+		guiEditProduct.getcBType().setSelectedItem(filteredProducts.get(index).getType());
 		guiEditProduct.getLblImage()
-				.setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(products.get(index).getImage())));
+				.setIcon(new ImageIcon(ImageUtils.fromBinaryToBufferedImage(filteredProducts.get(index).getImage())));
 	}
+
 	/**
-	 * Initialises the model for the JTable in the GUI. This method is the reason I had to divide the ListSelection
-	 * Listener from the rest of the listeners.
-	 * @return DefaultTableModel to apply to the JTable. 
+	 * Initialises the model for the JTable in the GUI. This method is the reason I
+	 * had to divide the ListSelection Listener from the rest of the listeners.
+	 * 
+	 * @return DefaultTableModel to apply to the JTable.
 	 */
 	public DefaultTableModel initializeJTable() {
 		String[] columnStrings = { "ID", "Name", "Description", "Price", "Amount", "Type", "Image" };
@@ -157,22 +188,24 @@ public class ControllerEditProduct {
 				return false;
 			}
 		};
-		for (Product product : products) {
+		for (Product product : filteredProducts) {
 			Object[] data = { product.getId(), product.getName(), product.getDescription(), product.getPrice(),
 					product.getAmount(), product.getType(), product.getImage() };
 			defaultTableModel.addRow(data);
 		}
 		return defaultTableModel;
 	}
+
 	/**
 	 * Refreshes the table. Call in case anything is modified.
+	 * 
 	 * @see handleDeletion() method
 	 * @see handleApply() method
 	 */
 	public void refreshTable() {
-		index = 0;
 		guiEditProduct.getTable().setModel(initializeJTable());
 	}
+
 	/**
 	 * Handles the deletion process.
 	 */
@@ -181,12 +214,13 @@ public class ControllerEditProduct {
 				"Are you sure you want delete the selected product?", "Confirm", JOptionPane.INFORMATION_MESSAGE);
 		if (selection == JOptionPane.YES_OPTION) {
 			DatabaseUtils.deleteProduct(products.get(index).getId());
-			JOptionPane.showMessageDialog(guiEditProduct, "Deleted product!", "Success",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(guiEditProduct, "Deleted product!", "Success", JOptionPane.INFORMATION_MESSAGE);
 			// After making changes to products list
 			guiEditProduct.getTxtSearch().setText("");
 			products = DatabaseUtils.getAllProductsAsList();
+			filteredProducts = products;
 			refreshTable();
+			initializeComponents();
 		}
 	}
 
@@ -209,8 +243,9 @@ public class ControllerEditProduct {
 				new GUIAdminMenu(guiEditProduct);
 				guiEditProduct.dispose();
 			} else if (btn == guiEditProduct.getBtnApply()) {
-				editMode();
 				handleApply();
+				if(editMode)
+					editMode();
 			} else if (btn == guiEditProduct.getBtnEdit()) {
 				editMode();
 			} else if (btn == guiEditProduct.getBtnSelectImg())
@@ -221,20 +256,14 @@ public class ControllerEditProduct {
 
 	}
 
-	public void updateProductList(List<Product> products) {
-		this.products = products;
-		refreshTable();
-	}
 
 	private void filterProducts() {
-		products = DatabaseUtils.getAllProductsAsList();
 		String searchText = guiEditProduct.getTxtSearch().getText().toLowerCase();
 
-		List<Product> filteredProducts = products.stream()
+		filteredProducts = products.stream()
 				.filter(product -> product.getName().toLowerCase().contains(searchText)).collect(Collectors.toList());
-
-		updateProductList(filteredProducts);
 		index = filteredProducts.isEmpty() ? -1 : 0;
+		refreshTable();
 		initializeComponents();
 	}
 

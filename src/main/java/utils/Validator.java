@@ -33,7 +33,11 @@ public class Validator {
 	}
 
 	public static boolean validateProductName(String name) {
-		return name.matches("[A-Za-z0-9\\s\\.-]+");
+		return name.matches("[A-Za-z0-9\\s\\.-]{1,200}");
+	}
+	
+	public static boolean validateProductDescription(String description) {
+		return description.matches(".{0,500}");
 	}
 
 	public static boolean validateProductPrice(String price) {
