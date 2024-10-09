@@ -121,9 +121,8 @@ public class ControllerEditProduct {
 				ImageUtils.bufferedImageToByteArray(ImageUtils.iconToBufferedImage(guiEditProduct.getLblImage().getIcon()),
 						"PNG"));
 		// After making changes to products list
-		guiEditProduct.getTxtSearch().setText("");
 		products = DatabaseUtils.getAllProductsAsList();
-		filteredProducts = products;
+		guiEditProduct.getTxtSearch().setText("");
 		refreshTable();
 		index = 0;
 		initializeComponents();
@@ -217,9 +216,8 @@ public class ControllerEditProduct {
 			DatabaseUtils.deleteProduct(products.get(index).getId());
 			JOptionPane.showMessageDialog(guiEditProduct, "Deleted product!", "Success", JOptionPane.INFORMATION_MESSAGE);
 			// After making changes to products list
-			guiEditProduct.getTxtSearch().setText("");
 			products = DatabaseUtils.getAllProductsAsList();
-			filteredProducts = products;
+			guiEditProduct.getTxtSearch().setText("");
 			refreshTable();
 			index = 0;
 			initializeComponents();
