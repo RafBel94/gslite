@@ -125,6 +125,7 @@ public class ControllerEditProduct {
 		products = DatabaseUtils.getAllProductsAsList();
 		filteredProducts = products;
 		refreshTable();
+		index = 0;
 		initializeComponents();
 	}
 
@@ -220,6 +221,7 @@ public class ControllerEditProduct {
 			products = DatabaseUtils.getAllProductsAsList();
 			filteredProducts = products;
 			refreshTable();
+			index = 0;
 			initializeComponents();
 		}
 	}
