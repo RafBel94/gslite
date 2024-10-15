@@ -5,3 +5,7 @@ It's a computer parts store where you can access the catalogue as a user.
 
 As an administrator, you may add, update or delete this catalogue, with different
 menus as you go along.
+
+## Administrator credentials (To Test)
+Username: admin
+Pass: admin1
