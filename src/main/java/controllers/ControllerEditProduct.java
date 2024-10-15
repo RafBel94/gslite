@@ -122,6 +122,7 @@ public class ControllerEditProduct {
 						"PNG"));
 		// After making changes to products list
 		products = DatabaseUtils.getAllProductsAsList();
+		filteredProducts = products;
 		guiEditProduct.getTxtSearch().setText("");
 		refreshTable();
 		index = 0;
@@ -217,6 +218,7 @@ public class ControllerEditProduct {
 			JOptionPane.showMessageDialog(guiEditProduct, "Deleted product!", "Success", JOptionPane.INFORMATION_MESSAGE);
 			// After making changes to products list
 			products = DatabaseUtils.getAllProductsAsList();
+			filteredProducts = products;
 			guiEditProduct.getTxtSearch().setText("");
 			refreshTable();
 			index = 0;
