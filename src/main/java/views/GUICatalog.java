@@ -2,6 +2,7 @@ package views;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
@@ -65,6 +66,13 @@ public class GUICatalog extends JFrame {
 			btn_admin = new JButton("Return to Admin Menu");
 			btn_admin.setBounds(370, 6, 160, 23);
 			contentPane.add(btn_admin);
+			btn_admin.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new GUIAdminMenu(frame);
+					dispose();
+				}
+			});
 		}
 		panel_searchBar = new JPanel();
 		panel_searchBar.setBounds(10, 11, 639, 51);
@@ -145,7 +153,6 @@ public class GUICatalog extends JFrame {
 	public void addActListener(ActionListener actListener) {
 		btn_details.addActionListener(actListener);
 		btn_logout.addActionListener(actListener);
-		btn_admin.addActionListener(actListener);
 	}
 
 	public void addDocuListener(DocumentListener docuListener) {
