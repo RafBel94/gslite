@@ -7,5 +7,5 @@ As an administrator, you may add, update or delete this catalogue, with differen
 menus as you go along.
 
 ## Administrator credentials (To Test)
-Username: admin
-Pass: admin1
+Username: admin123
+Pass: admin123
